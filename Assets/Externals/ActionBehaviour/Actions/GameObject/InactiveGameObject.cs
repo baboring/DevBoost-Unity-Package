@@ -1,7 +1,7 @@
 ﻿
 /* *************************************************
 *  Created:  2018-1-28 20:15:39
-*  File:     ObjectDeactiveNode.cs
+*  File:     InactiveGameObject.cs
 *  Author:   Benjamin
 *  Purpose:  []
 ****************************************************/
@@ -16,6 +16,7 @@ namespace ActionBehaviour {
 
 	public class InactiveGameObject : ActionNode {
 
+		[ReorderableList]
 		[SerializeField]
 		protected GameObject[] objects;
 

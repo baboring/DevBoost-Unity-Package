@@ -1,3 +1,8 @@
+Version 0.0.3 [2018.06.02]
+- Updated InactiveGameObject ( added reorderable attribute )
+- Added ScrollSnap into UI
+
+
 Version 0.0.2 [2018.06.01]
 
 * Updated ActionBehaviour Scripts
