@@ -1,3 +1,7 @@
+Version 0.0.5 [2018.06.09]
+- Updated ScrollSnap 
+- Added RectTransformExtensions
+
 Version 0.0.4 [2018.06.03]
 - Added ActionScript from the project
 - ActionScript have notifier and object base on scriptObject
