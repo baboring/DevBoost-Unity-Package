@@ -37,9 +37,9 @@ namespace ActionBehaviour {
 		private static void Log(LogType logType, string text)
 		{
 			if (logType == LogType.Error)
-				Logger.LogError("[ActionNode] " + text);
+                Debug.LogError("[ActionNode] " + text);
 			else if (m_LogMode == LogMode.All)
-				Logger.Debug("[ActionNode] " + text);
+                Debug.Log("[ActionNode] " + text);
 		}
 		
 	}

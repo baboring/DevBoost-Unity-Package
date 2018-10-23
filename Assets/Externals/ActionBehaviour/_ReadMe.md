@@ -1,3 +1,8 @@
+Version 0.0.6 [2018.10.22]
+- Added ExcuteInvoke on Execute Node
+- Added Log for log tracing
+- Updated SingletonMono 
+
 Version 0.0.5 [2018.06.09]
 - Updated ScrollSnap 
 - Added RectTransformExtensions

@@ -1,7 +1,7 @@
 ﻿
 /* *************************************************
 *  Created:  2018-1-28 20:15:39
-*  File:     ActionNode.cs
+*  File:     ObjectActiveNode.cs
 *  Author:   Benjamin
 *  Purpose:  []
 ****************************************************/
@@ -12,13 +12,15 @@ using UnityEngine;
 
 namespace ActionBehaviour {
 
-    using Common.Utilities;
+    using NaughtyAttributes;
 
-	public class Comment : ActionNode {
+	[RequireComponent(typeof(Rigidbody2D))]
+	public class Rigidbody2dAddForce : ActionNode {
 
 		[SerializeField]
-		protected string logText;
+		protected Vector2 force;
 
+		Rigidbody2D rigidbody;
 
         public override ActionState OnUpdate() {
 
@@ -26,10 +28,10 @@ namespace ActionBehaviour {
 			ActionState result = base.OnUpdate();
 			if(result != ActionState.Success)
 				return result;
-            if(logText.Length > 0)
-                Log.Trace(logText);
+			if(null == rigidbody)
+				rigidbody = GetComponent<Rigidbody2D>();
+			rigidbody.AddForce(force);
 			return ActionState.Success;
-
 		}
 	}
 

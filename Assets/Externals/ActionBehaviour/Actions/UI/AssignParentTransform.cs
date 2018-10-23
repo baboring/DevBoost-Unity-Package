@@ -50,7 +50,7 @@ namespace ActionBehaviour {
                 if( type == ManagerType.None)
                     targets[i].transform.SetParent(this.parent);
                 else if (type == ManagerType.UIViewManager)
-                    targets[i].transform.SetParent(UIViewManager.instance.transform);
+                    targets[i].transform.SetParent(UIViewManager.Instance.transform);
             }
 
 			return ActionState.Success;

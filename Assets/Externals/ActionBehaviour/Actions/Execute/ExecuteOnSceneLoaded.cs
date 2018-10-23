@@ -28,7 +28,7 @@ namespace ActionBehaviour {
         // called second
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            Logger.DebugFormat("OnSceneLoaded: {0},Mode = {1}", scene.name, mode.ToString());
+            Debug.LogFormat("OnSceneLoaded: {0},Mode = {1}", scene.name, mode.ToString());
             Execute();
         }
 	}

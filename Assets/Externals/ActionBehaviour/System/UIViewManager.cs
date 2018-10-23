@@ -15,7 +15,7 @@ namespace ActionBehaviour {
 
     using Common.Utilities;
 
-    public class UIViewManager : MonoSingleton<UIViewManager> {
+    public class UIViewManager : SingletonMono<UIViewManager> {
 
 		protected override void Awake()
 		{

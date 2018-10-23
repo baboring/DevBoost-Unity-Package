@@ -36,6 +36,10 @@ namespace ActionBehaviour {
 
             return state;
 		}
-		
-	}
+
+        public void ExecuteInvoke()
+        {
+            Execute();
+        }
+    }
 }
