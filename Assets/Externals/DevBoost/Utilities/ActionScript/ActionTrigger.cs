@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Common.ActionScript {
+namespace DevBoost.ActionScript {
 	using System;
 
 	public abstract class ActionTrigger : MonoBehaviour {

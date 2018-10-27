@@ -8,7 +8,7 @@
 using UnityEngine;
 using System;
 
-namespace Common.Utilities { 
+namespace DevBoost.Utilities { 
 
 	public abstract class SingletonBase<T> where T : class, new()
 	{

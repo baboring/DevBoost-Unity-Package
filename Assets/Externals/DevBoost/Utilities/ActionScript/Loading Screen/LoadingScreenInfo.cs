@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using Common.ActionScript;
+using DevBoost.ActionScript;
 
 [CreateAssetMenu (menuName = "ActionObject/LoadingScreenInfo")]
 public class LoadingScreenInfo : ActionObject {

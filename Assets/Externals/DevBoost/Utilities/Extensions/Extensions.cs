@@ -8,7 +8,7 @@ using System;
 using System.Reflection;
 
 
-namespace Common
+namespace DevBoost
 {
     public static class TransformExtention
     {

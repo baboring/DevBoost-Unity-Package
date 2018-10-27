@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Common.Utilities {
+namespace DevBoost.Utilities {
 
 
 	public class Timer : SingletonMono<Timer> {

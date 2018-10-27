@@ -3,7 +3,7 @@
 using System.IO;
 using System.Linq;
 
-namespace Common.Utilities {
+namespace DevBoost.Utilities {
 
 	static public class Facade
 	{

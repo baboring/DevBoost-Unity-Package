@@ -10,9 +10,20 @@ using UnityEngine.SceneManagement;
 
 namespace ActionBehaviour {
 
-    using Common.Utilities;
+    using NaughtyAttributes;
 
     public class ExecuteOnSceneLoaded : Execute {
+
+        [BoxGroup("Setting")]
+        [SerializeField] protected bool isAny = true;
+
+        [BoxGroup("Setting")]
+        [Dropdown("SceneNameSet")]
+        [HideIf("isAny")]
+        [SerializeField] protected string SceneName; // Scene Name
+
+        [BoxGroup("Setting")]
+        [SerializeField] protected StringSet SceneNameSet;
 
         // called first
         void OnEnable()
@@ -29,7 +40,11 @@ namespace ActionBehaviour {
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             Debug.LogFormat("OnSceneLoaded: {0},Mode = {1}", scene.name, mode.ToString());
-            Execute();
+
+            if(isAny)
+                Execute();
+            else if(SceneName == scene.name)
+                Execute();
         }
-	}
+    }
 }

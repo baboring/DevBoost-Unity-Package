@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
-namespace Common
+namespace DevBoost
 {
     public static class ScriptableObjectUtility
     {

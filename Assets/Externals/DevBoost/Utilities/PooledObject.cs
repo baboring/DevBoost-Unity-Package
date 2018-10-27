@@ -7,7 +7,7 @@
 using UnityEngine;
 using System;
 
-namespace Common.Utilities {
+namespace DevBoost.Utilities {
 
 	public class PooledObject : MonoBehaviour {
 

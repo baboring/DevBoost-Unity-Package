@@ -1,5 +1,11 @@
+Version 0.0.6 [2018.10.24]
+- Updated BaseNode ( updated OnUpdate logic)
+- Added ActiveScene, Activate giving scene to active
+- Updated SequenceNode ( fixed coroutine work in other coroutine, infinity loop)
+- Separated scenes to load
+
 Version 0.0.6 [2018.10.22]
-- Added ExcuteInvoke on Execute Node
+- Added ExecuteInvoke on Execute Node
 - Added Log for log tracing
 - Updated SingletonMono 
 

@@ -3,7 +3,7 @@ using System.Collections;
 
 // 재활용을 하기위한 Initalize를 호출해줘야한다.
 
-namespace Common.Utilities {
+namespace DevBoost.Utilities {
 		
 	public class SelfDestoryTimer : MonoBehaviour
 	{

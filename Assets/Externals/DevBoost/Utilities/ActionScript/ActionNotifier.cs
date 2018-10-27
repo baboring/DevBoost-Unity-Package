@@ -4,9 +4,9 @@ using UnityEngine;
 using System;
 
 
-namespace Common.ActionScript {
+namespace DevBoost.ActionScript {
 
-	using Common.Utilities;
+	using DevBoost.Utilities;
 
 	public class ActionNotifier : SingletonMono<ActionNotifier> {
 
@@ -15,7 +15,7 @@ namespace Common.ActionScript {
 		// register
 		static public bool Register(string Name, ActionHandler handler) {
 			Operation op;
-			if(!Instance.events.TryGetValue(Name, out op)) {
+			if(!SafeInstance.events.TryGetValue(Name, out op)) {
 				op = new Operation();
 				Instance.events.Add(Name,op);
 			}
@@ -26,7 +26,7 @@ namespace Common.ActionScript {
 		// Unregister
 		static public bool Unregister(string Name, ActionHandler handler) {
 			Operation op;
-			if(!Instance.events.TryGetValue(Name, out op))
+			if(!SafeInstance.events.TryGetValue(Name, out op))
 				return false;
 			op.handler -= handler;
 			return true;
@@ -35,7 +35,7 @@ namespace Common.ActionScript {
 
 		static public bool Invoke(string Name, object arg) {
 			Operation op;
-			if(!Instance.events.TryGetValue(Name, out op)) 
+			if(!SafeInstance.events.TryGetValue(Name, out op)) 
 				return false;
 			op.Action(arg);
 			return true;			

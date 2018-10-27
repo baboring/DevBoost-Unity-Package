@@ -4,17 +4,24 @@
 *  Author:   Benjamin
 *  Purpose:  []
 ****************************************************/
-
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ActionBehaviour {
 
-	using Common.Utilities;
+	using DevBoost.Utilities;
     using NaughtyAttributes;
 
-	public class ActionNode : BaseNode {
+    abstract public class ActionNode<T> : ActionNode where T : class
+    {
+        sealed public override Type agentType { get { return typeof(T); } }
+        new public T agent { get { return base.agent as T; } }
+    }
+
+    // Action Node class
+    public class ActionNode : BaseNode {
 
 		public enum LogMode { All, JustErrors };
 		static LogMode m_LogMode = LogMode.All;
@@ -29,8 +36,12 @@ namespace ActionBehaviour {
         }
 
         public override ActionState OnUpdate() {
+            if (state != ActionState.None)
+                return state;
+
             if(null != comments && comments.Length > 0)
                 Log(LogType.Log, comments);
+
 			return ActionState.Success;
 		}
 

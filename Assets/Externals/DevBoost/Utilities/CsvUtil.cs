@@ -7,7 +7,7 @@ using System;
 using System.Reflection;
 using System.ComponentModel;
 
-namespace Common.Utilities {
+namespace DevBoost.Utilities {
 
 	// This class uses Reflection and Linq so it's not the fastest thing in the
 	// world; however I only use it in development builds where we want to allow

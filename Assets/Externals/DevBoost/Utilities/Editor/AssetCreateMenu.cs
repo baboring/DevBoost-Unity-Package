@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Common
+namespace DevBoost
 {
     using ActionBehaviour;
     public class AssetCreateMenu

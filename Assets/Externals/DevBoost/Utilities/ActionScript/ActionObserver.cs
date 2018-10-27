@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Common.ActionScript {
+namespace DevBoost.ActionScript {
 
 	using NaughtyAttributes;
 

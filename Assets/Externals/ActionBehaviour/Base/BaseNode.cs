@@ -4,7 +4,8 @@
 *  Author:   Benjamin
 *  Purpose:  []
 ****************************************************/
-
+using System;
+using System.Collections;
 using UnityEngine;
 
 namespace ActionBehaviour
@@ -19,18 +20,23 @@ namespace ActionBehaviour
         Error = -1,
 
     }
-    public interface IBaseNode {
-        
+
+    public interface IBaseNode 
+    {
         ActionState OnUpdate();
+        Type agentType { get; }
+        IBaseNode agent { get; }
     }
 
-	// Base class
+    // Base class
     public abstract class BaseNode : MonoBehaviour,IBaseNode {
 
         protected ActionState _curr_state;
         protected ActionState _prev_state;
 
-		// state
+        public virtual Type agentType { get { return GetType(); } }
+        public IBaseNode agent { get { return this; } }
+        // state
         public ActionState state {
             get { return _curr_state; }
              
@@ -63,7 +69,10 @@ namespace ActionBehaviour
         }
 
 		// ready
-		public abstract ActionState OnUpdate();
+        public virtual ActionState OnUpdate()
+        {
+            return state == ActionState.None ? ActionState.Success : state;
+        }
 
 		// default core function
 		public virtual ActionState Execute() {
@@ -72,8 +81,7 @@ namespace ActionBehaviour
             OnReset();
 
 			// update 
-            if(ActionState.Running == state || ActionState.None == state) 
-				state = OnUpdate();
+		    state = OnUpdate();
 
 			return state;
 		}
@@ -84,6 +92,8 @@ namespace ActionBehaviour
     {
         public event System.Action<AsyncProcessing> onCompleted;
         bool _isDone;
+
+        // properties
         public bool isDone
         {
             get

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Common.Utilities {
-	using Common.ActionScript;
+namespace DevBoost.Utilities {
+	using DevBoost.ActionScript;
 	public class LoadingScreenTrigger : ActionTrigger {
 
 		// Use this for initialization

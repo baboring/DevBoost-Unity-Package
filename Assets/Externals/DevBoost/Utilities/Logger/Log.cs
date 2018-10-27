@@ -14,7 +14,7 @@ using System.IO;
 using System.Text;
 #endif
 
-namespace Common.Utilities {
+namespace DevBoost.Utilities {
 
     internal class Log : SingletonMono<Log>
     {
@@ -69,7 +69,7 @@ namespace Common.Utilities {
                 File.Delete(filename);
             // Open the log file to append the new log to it.
             OutputStream = new StreamWriter(filename, true);
-            Dbg.Trace("<<< Logger Start >>>\n\n");
+            Log.Trace("<<< Logger Start >>>\n\n");
 #endif
         }
 

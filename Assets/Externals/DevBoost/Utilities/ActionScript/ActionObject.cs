@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Common.ActionScript {
+namespace DevBoost.ActionScript {
 
 	public abstract class ActionObject : ScriptableObject {
 

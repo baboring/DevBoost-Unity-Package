@@ -8,7 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Common.Utilities
+namespace DevBoost.Utilities
 {
 	public interface IState {
 		void Enter(Entity e);

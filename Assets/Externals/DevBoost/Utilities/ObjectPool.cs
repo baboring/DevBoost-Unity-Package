@@ -7,7 +7,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace Common.Utilities {
+namespace DevBoost.Utilities {
 	public class ObjectPool : MonoBehaviour {
 
 		PooledObject prefab;

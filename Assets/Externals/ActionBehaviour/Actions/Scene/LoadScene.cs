@@ -9,7 +9,6 @@ using UnityEngine.SceneManagement;
 
 namespace ActionBehaviour {
 
-	using Common.Utilities;
     using NaughtyAttributes;
 
 	public enum LOAD_SCENE_METHOD {
@@ -20,49 +19,59 @@ namespace ActionBehaviour {
     public class LoadScene : ActionNode {
 
 		[BoxGroup("Setting")]
-        [SerializeField]
-        protected bool isIndex	= true;
+        [SerializeField] protected bool isIndex	= true;
 
         [BoxGroup("Setting")]
 		[Dropdown("LevelNameSet")]
         [HideIf("isIndex")]
-        [SerializeField]
-        protected string LevelName; // Scene Name
+        [SerializeField] protected string LevelName; // Scene Name
 
         [BoxGroup("Setting")]
         [ShowIf("isIndex")]
-		[SerializeField]
-		protected int LeveIndex;		// Scene Build Index
+		[SerializeField] protected int LeveIndex;		// Scene Build Index
 
 		[BoxGroup("Setting")]
-        [SerializeField]
-		protected StringSet LevelNameSet;
+        [SerializeField] protected StringSet LevelNameSet;
 
         [BoxGroup("Setting")]
-		[SerializeField]
-		protected LOAD_SCENE_METHOD loadMethod;	// Sync, Async
+		[SerializeField] protected LOAD_SCENE_METHOD loadMethod;	// Sync, Async
 
         [BoxGroup("Setting")]
-		[SerializeField]
-		protected LoadSceneMode loadMode;	// Addictive, Single
+		[SerializeField] protected LoadSceneMode loadMode;	// Addictive, Single
 
         [BoxGroup("Actions")]
-        [SerializeField]
-        protected ActionNode NodeOnStartLoad;
+        [SerializeField] protected ActionNode NodeOnStartLoad;
 
         [BoxGroup("Actions")]
-        [SerializeField]
-        protected ActionNode NodeOnSceneLoaded;
+        [SerializeField] protected ActionNode NodeOnSceneLoaded;
 
+        // async operator
+        AsyncOperation operation = null;
 
-        AsyncOperation operation;
+        // reset state all 
+        protected override void OnReset()
+        {
+            base.OnReset();
+
+            if (null != operation)
+                operation.completed -= OnComplete;
+
+            operation = null;
+        }
+
+        void OnComplete(AsyncOperation async)
+        {
+            state = ActionState.Success;
+            if (null != NodeOnSceneLoaded)
+                NodeOnSceneLoaded.Execute();
+        }
 
         // Action Script
         public override ActionState OnUpdate() {
 
-			// parent update
+			// parent update or woring on async
 			ActionState result = base.OnUpdate();
-			if(result != ActionState.Success)
+			if(result != ActionState.Success || operation != null)
 				return result;
 
             //SceneManager.sceneLoaded += OnSceneLoaded;
@@ -76,12 +85,7 @@ namespace ActionBehaviour {
                 if(loadMethod == LOAD_SCENE_METHOD.Async) {
                     state = ActionState.Running;
                     operation = SceneManager.LoadSceneAsync(LeveIndex, loadMode);
-                    operation.completed += (var) =>
-                    {
-                        state = ActionState.Success;
-                        if (null != NodeOnSceneLoaded)
-                            NodeOnSceneLoaded.Execute();
-                    };
+                    operation.completed += OnComplete;
                 }
                 else {
                     SceneManager.LoadScene(LeveIndex, loadMode);
@@ -93,12 +97,7 @@ namespace ActionBehaviour {
                 if(loadMethod == LOAD_SCENE_METHOD.Async) {
                     state = ActionState.Running;
                     operation = SceneManager.LoadSceneAsync(LevelName, loadMode);
-                    operation.completed += (var) =>
-                    {
-                        state = ActionState.Success;
-                        if (null != NodeOnSceneLoaded)
-                            NodeOnSceneLoaded.Execute();
-                    };
+                    operation.completed += OnComplete;
                 }
                 else {
                     SceneManager.LoadScene(LevelName, loadMode);
