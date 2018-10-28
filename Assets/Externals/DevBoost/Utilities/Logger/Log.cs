@@ -19,17 +19,18 @@ namespace DevBoost.Utilities {
     internal class Log : SingletonMono<Log>
     {
         //-------------------------------------------------------------------------------------------------------------------------
-        public string LogFolder = "Logs";
-        public bool IsEchoToConsole = true;
-        public bool IsAddTimeStamp = true;
-        public bool IsDeleteOnStart = true;
+        [SerializeField] private string LogFolder = "Logs";
+        [SerializeField] private bool IsEchoToConsole = true;
+        [SerializeField] private bool IsAddTimeStamp = true;
+        [SerializeField] private bool IsDeleteOnStart = true;
+        [SerializeField] private bool IsPersistentDataPath = false;
         //-------------------------------------------------------------------------------------------------------------------------
 
 #if SAVE_ENABLED
         private StreamWriter OutputStream;
 #endif
 
-        protected override void Awake()
+        protected new void Awake()
         {
             base.Awake();
             CreateLogfile();
@@ -47,7 +48,6 @@ namespace DevBoost.Utilities {
 
         }
 
-        [Conditional("FILELOG"), Conditional("PROFILE")]
         void CreateLogfile()
         {
 #if SAVE_ENABLED
@@ -57,15 +57,21 @@ namespace DevBoost.Utilities {
 
             filename = String.Format(saveFilename, now, index > 0 ? "_" + index : "");
 
-            if(Application.isEditor)
+            // for dev
+            if (Application.isEditor)
                 filename = "Log.log";
+
+            if (IsPersistentDataPath && !Application.isEditor)
+            {
+                LogFolder = Application.persistentDataPath + "/" + LogFolder;
+            }
 
             if (LogFolder.Length > 0)
             {
                 System.IO.Directory.CreateDirectory(LogFolder);
                 filename = LogFolder + "/" + filename;
             }
-            if(IsDeleteOnStart)
+            if (IsDeleteOnStart)
                 File.Delete(filename);
             // Open the log file to append the new log to it.
             OutputStream = new StreamWriter(filename, true);
@@ -76,28 +82,36 @@ namespace DevBoost.Utilities {
         void OnDestory()
         {
 #if SAVE_ENABLED
-            if (OutputStream != null) {
+            if (OutputStream != null)
+            {
                 OutputStream.Close();
                 OutputStream = null;
             }
 #endif
         }
 
-        [Conditional("FILELOG"), Conditional("PROFILE")]
         private void Write(string message, bool isTimeStamp = true)
         {
+
 #if SAVE_ENABLED
-            if (IsAddTimeStamp && isTimeStamp) {
+            // window debug message
+            System.Diagnostics.Debug.WriteLine(message);
+
+            if (IsAddTimeStamp && isTimeStamp)
+            {
                 DateTime now = DateTime.Now;
                 message = string.Format("[{0:H:mm:ss}] {1}", now, message);
             }
 
-            if (OutputStream != null) {
+            if (OutputStream != null)
+            {
                 OutputStream.WriteLine(message);
                 OutputStream.Flush();
             }
 
-            if (IsEchoToConsole) {
+
+            if (IsEchoToConsole)
+            {
                 UnityEngine.Debug.Log(message);
             }
 #endif
@@ -107,30 +121,26 @@ namespace DevBoost.Utilities {
         [Conditional("FILELOG"), Conditional("PROFILE")]
         public static void Trace(String format, params object[] args)
         {
-#if SAVE_ENABLED
             if (Instance != null)
                 Instance.Write(string.Format(format, args));
             //else
             //    // Fallback if the debugging system hasn't been initialized yet.
             //    UnityEngine.Debug.Log(Message);
-#endif
         }
 
         [Conditional("PROFILE")]
-        public static void TraceProfile(String format, params object[] args)
+        public static void Profile(String format, params object[] args)
         {
-#if SAVE_ENABLED
             if (Instance != null)
                 Instance.Write(string.Format(format, args));
             //else
             //    // Fallback if the debugging system hasn't been initialized yet.
             //    UnityEngine.Debug.Log(Message);
-#endif
         }
 
 
 
-        #region Capture Log
+
         [Serializable]
         public class LogMask
         {
@@ -527,6 +537,6 @@ namespace DevBoost.Utilities {
             if (autoScroll)
                 scrollPosition.y = float.MaxValue;
         }
-#endregion   
     }
+
 }

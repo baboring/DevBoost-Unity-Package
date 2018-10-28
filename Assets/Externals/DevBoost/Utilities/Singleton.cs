@@ -64,7 +64,7 @@ namespace DevBoost.Utilities {
 		}
 
         // Awake
-		protected virtual void Awake()	{
+		protected void Awake()	{
             Log.Trace("Awake singleton : " + typeof(T));
             if (null == Instance)
                 Instance = (T)this;

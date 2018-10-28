@@ -12,17 +12,21 @@ namespace DevBoost.Utilities {
 		/// <summary>
 		/// Timer 
 		/// </summary>
-		void decreaseTimeRemaining() {
+		void decreaseTimeRemaining() 
+        {
 			foreach (var t in lstIimer)
 				t.Elapsed(100);
 			lstIimer.RemoveAll(item => item.IsTimeOver);
 		}
 
-		protected override void Awake() {
+		protected new void Awake() 
+        {
+            base.Awake();
 			InvokeRepeating("decreaseTimeRemaining", 1, 0.1f);
 		}
 
-		class TIMER {
+		class TIMER 
+        {
 			public int id;
 			public Action<int> onListener;
 			public int remainTime;

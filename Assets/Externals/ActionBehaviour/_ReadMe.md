@@ -1,3 +1,7 @@
+Version 0.0.7 [2018.10.27]
+- Updated SingletonMono ( removed virtual on Awake in order to keep alone, if a child class want to use Awake, then it should be used by new keyword on it )
+- Updated Log ( added option saving path for persistent data path )
+
 Version 0.0.6 [2018.10.24]
 - Updated BaseNode ( updated OnUpdate logic)
 - Added ActiveScene, Activate giving scene to active
