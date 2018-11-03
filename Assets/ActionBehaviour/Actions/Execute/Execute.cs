@@ -20,7 +20,7 @@ namespace ActionBehaviour {
             Debug.Assert(Node != null, "Node is null:");
         }
 
-        public override ActionState OnUpdate() {
+        protected override ActionState OnUpdate() {
 
 			// parent update
 			ActionState result = base.OnUpdate();
@@ -37,9 +37,5 @@ namespace ActionBehaviour {
             return state;
 		}
 
-        public void ExecuteInvoke()
-        {
-            Execute();
-        }
     }
 }

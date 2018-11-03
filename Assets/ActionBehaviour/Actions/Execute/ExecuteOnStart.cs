@@ -14,7 +14,7 @@ namespace ActionBehaviour {
     public class ExecuteOnStart : Execute {
 
 		void Start() {
-			Execute();
+            ExecuteInvoke();
 		}		
 	}
 }

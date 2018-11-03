@@ -14,7 +14,7 @@ namespace ActionBehaviour {
 	public class ExecuteOnDisable : Execute {
 
 		void OnDisable() {
-			Execute();
+            ExecuteInvoke();
 		}
 		
 	}

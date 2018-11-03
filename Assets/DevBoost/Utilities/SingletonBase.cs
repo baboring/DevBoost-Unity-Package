@@ -8,12 +8,13 @@
 using UnityEngine;
 using System;
 
-namespace DevBoost.Utilities { 
+namespace DevBoost.Utilities 
+{ 
 
 	public abstract class SingletonBase<T> where T : class, new()
 	{
 		static protected T _instance;
-		static public T instance
+		static public T Instance
 		{
 			get { return _instance; }
 			set
@@ -24,17 +25,18 @@ namespace DevBoost.Utilities {
 				_instance = value;
 			}
 		}
-		public SingletonBase() {
+
+		protected SingletonBase() {
 			if (_instance != null)
 				throw new System.ApplicationException("cannot set Instance twice!");
 		}
 
-		static public bool isInstanced { get { return  null != _instance; } }
+		static public bool IsInstanced { get { return  null != _instance; } }
 
 		static protected T Instantiate()
 		{
-			instance = new T();
-			return instance;
+			Instance = new T();
+			return Instance;
 		}
 
 		static public void Destroy()

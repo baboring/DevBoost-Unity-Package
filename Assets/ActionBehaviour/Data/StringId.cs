@@ -21,7 +21,7 @@ namespace ActionBehaviour
         }
 
 
-        public override ActionState OnUpdate() { return ActionState.Success; }
+        protected override ActionState OnUpdate() { return ActionState.Success; }
 
 
 	}

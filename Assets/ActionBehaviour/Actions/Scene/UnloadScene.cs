@@ -39,7 +39,7 @@ namespace ActionBehaviour {
         AsyncOperation operation;
 
         // Action Script
-        public override ActionState OnUpdate() {
+        protected override ActionState OnUpdate() {
 
 			// parent update
 			ActionState result = base.OnUpdate();

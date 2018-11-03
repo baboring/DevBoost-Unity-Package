@@ -7,21 +7,26 @@
 
 using UnityEngine;
 
-namespace ActionBehaviour {
+namespace ActionBehaviour 
+{
 
-	// deprecated ( ActionStarter instead )
-    public class ActionStarter : Execute {
+    public enum StartOption
+    {
+        None = 0,   // nothing to start
+        AutoStart,  // called on Start
+    }
 
-		public enum StartOption {
-			None = 0,	// nothing to start
-			AutoStart,	// called on Start
-		}
+    /// <summary>
+    /// Action starter.
+    /// </summary>
+    public class ActionStarter : Execute 
+    {
 
 		[SerializeField]
 		protected StartOption startType;
 
-		void Start() {
-			
+		void Start() 
+        {
 			if( StartOption.AutoStart == startType )
 				base.Execute();
 		}

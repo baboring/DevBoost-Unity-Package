@@ -7,17 +7,16 @@
 using UnityEngine;
 using System;
 
-namespace DevBoost.Utilities {
+namespace DevBoost.Utilities 
+{
 
 	public abstract class Singleton<T> : SingletonBase<T> where T : class, new()
 	{
-		static new public T instance {
+		static new public T Instance {
 			get {
-				if (_instance == null)
-					return Instantiate();
-				return _instance;
-			}
-			set {
+                return _instance ?? Instantiate();
+            }
+            set {
 				if (_instance != null)
 					throw new System.ApplicationException("cannot set Instance twice!");
 
@@ -25,7 +24,7 @@ namespace DevBoost.Utilities {
 			}
 		}
 
-		public Singleton() {
+		protected Singleton() {
 			if (_instance != null)
 				throw new System.ApplicationException("cannot set Instance twice!");
 		}
@@ -39,7 +38,7 @@ namespace DevBoost.Utilities {
     }
 
     public class SingletonMono<T> : MonoBehaviour where T : SingletonMono<T>
-	{
+    {
         public static T Instance
         {
             get;
@@ -48,7 +47,7 @@ namespace DevBoost.Utilities {
         //callback called when it destroyed
         public System.Action OnDestroyListener;
 
-        private static object _lock = new object();
+        static object _lock = new object();
 
 		// Returns the instance of the singleton
 		public static T SafeInstance
@@ -67,7 +66,7 @@ namespace DevBoost.Utilities {
 		protected void Awake()	{
             Log.Trace("Awake singleton : " + typeof(T));
             if (null == Instance)
-                Instance = (T)this;
+                Instance = this as T;
 		}
 
 		static protected T Instantiate() {

@@ -21,7 +21,7 @@ namespace ActionBehaviour
         [SerializeField] protected StringSet SceneNameSet;
 
         // Action Script
-        public override ActionState OnUpdate()
+        protected override ActionState OnUpdate()
         {
             // parent update or woring on async
             ActionState result = base.OnUpdate();

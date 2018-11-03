@@ -7,30 +7,27 @@
 
 using UnityEngine;
 
-namespace ActionBehaviour {
+namespace ActionBehaviour 
+{
 
 	// deprecated ( ActionStarter instead )
-    public class ActionController : Execute {
-
-		public enum StartOption {
-			None = 0,	// nothing to start
-			AutoStart,	// called on Start
-		}
-
+    public class ActionController : Execute 
+    {
+    
 		[SerializeField]
 		protected StartOption startType;
 
 		void Start() {
 			
 			if( StartOption.AutoStart == startType )
-				base.Execute();
+				base.ExecuteInvoke();
 		}
 
         // called by outside
         public void RunController()
         {
 
-            base.Execute();
+            base.ExecuteInvoke();
         }
 
 		

@@ -54,7 +54,7 @@ namespace ActionBehaviour {
         }
 
         // Run Action
-        public override ActionState OnUpdate() {
+        protected override ActionState OnUpdate() {
 
             if(null == async || !async.isDone) {
                 ActionState result = base.OnUpdate();
@@ -100,7 +100,7 @@ namespace ActionBehaviour {
                     if (childNodes[m_index] == this)
                         return ActionState.Error;
 
-                    result = childNodes[m_index].OnUpdate();
+                    result = childNodes[m_index].Execute(false);
                     if (ActionState.Success != result)
                         return result;
                     ++m_index;

@@ -1,3 +1,7 @@
+Version 0.0.8 [2018.11.03]
+- Updated ActionNode ( changed permission level to access the OnUpdate from public to protected)
+- Added SingleActionNode ( singleton start point to run) 
+
 Version 0.0.7 [2018.10.27]
 - Updated SingletonMono ( removed virtual on Awake in order to keep alone, if a child class want to use Awake, then it should be used by new keyword on it )
 - Updated Log ( added option saving path for persistent data path )

@@ -36,7 +36,7 @@ namespace ActionBehaviour {
         }
 
         // Update node
-        public override ActionState OnUpdate() {
+        protected override ActionState OnUpdate() {
 
 			// parent update
             if(null == m_working && state != ActionState.Success) {

@@ -20,7 +20,7 @@ namespace ActionBehaviour {
 		protected string logText;
 
 
-        public override ActionState OnUpdate() {
+        protected override ActionState OnUpdate() {
 
 			// parent update
 			ActionState result = base.OnUpdate();

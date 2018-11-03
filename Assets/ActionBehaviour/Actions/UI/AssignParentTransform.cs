@@ -39,7 +39,7 @@ namespace ActionBehaviour {
 		protected ActionNode[] targets;
 
 
-        public override ActionState OnUpdate() {
+        protected override ActionState OnUpdate() {
 
 			// parent update
 			ActionState result = base.OnUpdate();

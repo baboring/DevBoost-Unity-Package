@@ -22,7 +22,7 @@ namespace ActionBehaviour {
 
 		Rigidbody2D rigidbody;
 
-        public override ActionState OnUpdate() {
+        protected override ActionState OnUpdate() {
 
 			// parent update
 			ActionState result = base.OnUpdate();

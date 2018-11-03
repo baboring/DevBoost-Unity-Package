@@ -43,7 +43,7 @@ namespace DevBoost.Utilities {
             }
 
 #if SAVE_ENABLED
-            Application.RegisterLogCallback(CaptureLog);
+            Application.logMessageReceived += CaptureLog;
 #endif
 
         }

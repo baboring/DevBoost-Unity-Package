@@ -35,7 +35,7 @@ namespace ActionBehaviour {
             Execute();
         }
 
-        public override ActionState OnUpdate() {
+        protected override ActionState OnUpdate() {
             if (state != ActionState.None)
                 return state;
 

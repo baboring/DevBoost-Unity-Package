@@ -63,11 +63,11 @@ namespace ActionBehaviour {
         {
             state = ActionState.Success;
             if (null != NodeOnSceneLoaded)
-                NodeOnSceneLoaded.Execute();
+                NodeOnSceneLoaded.ExecuteInvoke();
         }
 
         // Action Script
-        public override ActionState OnUpdate() {
+        protected override ActionState OnUpdate() {
 
 			// parent update or woring on async
 			ActionState result = base.OnUpdate();
@@ -78,7 +78,7 @@ namespace ActionBehaviour {
 
             // Run Before load Scene
             if (null != NodeOnStartLoad)
-                NodeOnStartLoad.Execute();
+                NodeOnStartLoad.ExecuteInvoke();
 
 			// Load scene index
             if(isIndex){

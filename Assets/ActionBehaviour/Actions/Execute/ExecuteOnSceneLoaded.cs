@@ -23,6 +23,7 @@ namespace ActionBehaviour {
         [SerializeField] protected string SceneName; // Scene Name
 
         [BoxGroup("Setting")]
+        [HideIf("isAny")]
         [SerializeField] protected StringSet SceneNameSet;
 
         // called first
@@ -42,9 +43,9 @@ namespace ActionBehaviour {
             Debug.LogFormat("OnSceneLoaded: {0},Mode = {1}", scene.name, mode.ToString());
 
             if(isAny)
-                Execute();
+                ExecuteInvoke();
             else if(SceneName == scene.name)
-                Execute();
+                ExecuteInvoke();
         }
     }
 }

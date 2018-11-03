@@ -19,7 +19,7 @@ namespace ActionBehaviour {
 		protected PooledObject target;
 
         // Action Script
-        public override ActionState OnUpdate() {
+        protected override ActionState OnUpdate() {
 
 			if (target == null)
 				return ActionState.Error;

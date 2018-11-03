@@ -23,7 +23,6 @@ namespace ActionBehaviour
 
     public interface IBaseNode 
     {
-        ActionState OnUpdate();
         Type agentType { get; }
         IBaseNode agent { get; }
     }
@@ -69,23 +68,29 @@ namespace ActionBehaviour
         }
 
 		// ready
-        public virtual ActionState OnUpdate()
+        protected virtual ActionState OnUpdate()
         {
             return state == ActionState.None ? ActionState.Success : state;
         }
 
 		// default core function
-		public virtual ActionState Execute() {
+		public virtual ActionState Execute(bool reset = true) {
 
 			// start up 
-            OnReset();
+            if(reset)
+                OnReset();
 
 			// update 
 		    state = OnUpdate();
 
 			return state;
 		}
-	}
+
+        public void ExecuteInvoke()
+        {
+            Execute();
+        }
+    }
 
     // Aync proc
     public class AsyncProcessing
