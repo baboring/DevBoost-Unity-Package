@@ -110,10 +110,6 @@ namespace DevBoost.Utilities {
             }
 
 
-            if (IsEchoToConsole)
-            {
-                UnityEngine.Debug.Log(message);
-            }
 #endif
         }
 
@@ -122,7 +118,12 @@ namespace DevBoost.Utilities {
         public static void Trace(String format, params object[] args)
         {
             if (Instance != null)
-                Instance.Write(string.Format(format, args));
+            {
+                if (Instance.IsEchoToConsole)
+                    UnityEngine.Debug.Log(string.Format(format, args));
+                else
+                    Instance.Write(string.Format(format, args));
+            }
             //else
             //    // Fallback if the debugging system hasn't been initialized yet.
             //    UnityEngine.Debug.Log(Message);
@@ -132,7 +133,12 @@ namespace DevBoost.Utilities {
         public static void Profile(String format, params object[] args)
         {
             if (Instance != null)
-                Instance.Write(string.Format(format, args));
+            {
+                if (Instance.IsEchoToConsole)
+                    UnityEngine.Debug.Log(string.Format(format, args));
+                else
+                    Instance.Write(string.Format(format, args));
+            }
             //else
             //    // Fallback if the debugging system hasn't been initialized yet.
             //    UnityEngine.Debug.Log(Message);
@@ -212,7 +218,6 @@ namespace DevBoost.Utilities {
         [SerializeField]
         private bool _isVisible = true;
 
-        public bool dontDestroyOnLoad = false;
 
         public GUISkin guiSkin = null;
         public int guiDepth = 0;

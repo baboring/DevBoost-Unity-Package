@@ -7,8 +7,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace DevBoost.Utilities {
-	public class ObjectPool : MonoBehaviour {
+namespace DevBoost.Utilities 
+{
+	public class ObjectPool : MonoBehaviour 
+    {
 
 		PooledObject prefab;
 
@@ -19,18 +21,19 @@ namespace DevBoost.Utilities {
         /// </summary>
         /// <returns>The object pool.</returns>
         /// <param name="prefab">Prefab.</param>
-		public static ObjectPool CreateObjectPool (PooledObject prefab) {
+		public static ObjectPool CreateObjectPool (PooledObject prefab) 
+        {
 			GameObject obj;
 			ObjectPool pool;
-			if (Application.isEditor) {
-				obj = GameObject.Find(prefab.name + " Pool");
-				if (obj) {
-					pool = obj.GetComponent<ObjectPool>();
-					if (pool) {
-						return pool;
-					}
-				}
-			}
+			//if (Application.isEditor) {
+			//	obj = GameObject.Find(prefab.name + " Pool");
+			//	if (obj) {
+			//		pool = obj.GetComponent<ObjectPool>();
+			//		if (pool) {
+			//			return pool;
+			//		}
+			//	}
+			//}
 			obj = new GameObject(prefab.name + " Pool");
 			//DontDestroyOnLoad(obj);
 			pool = obj.AddComponent<ObjectPool>();
@@ -43,7 +46,8 @@ namespace DevBoost.Utilities {
         /// </summary>
         /// <returns>The object.</returns>
         /// <param name="arg">Argument.</param>
-		public PooledObject GetObject (PooledObject arg = default(PooledObject)) {
+		public PooledObject GetObject (PooledObject arg = default(PooledObject)) 
+        {
 			PooledObject obj;
             if(arg != default(PooledObject)) {
                 int index = FindIndex(arg);
@@ -59,23 +63,30 @@ namespace DevBoost.Utilities {
 			if (lastAvailableIndex >= 0) {
 				obj = availableObjects[lastAvailableIndex];
 				availableObjects.RemoveAt(lastAvailableIndex);
-				obj.gameObject.SetActive(true);
 			}
 			else {
 				obj = Instantiate<PooledObject>(prefab);
 				obj.transform.SetParent(transform, false);
 				obj.poolHandler = this;
-			}
-			return obj;
+            }
+            obj.gameObject.SetActive(true);
+            return obj;
 		}
 
-        public int FindIndex(PooledObject obj) {
+        public int FindIndex(PooledObject obj) 
+        {
             return availableObjects.FindIndex((val) => { return val == obj; });
         }
 
-        public void AddObject (PooledObject obj) {
+        public void AddObject(PooledObject obj) 
+        {
 			obj.gameObject.SetActive(false);
 			availableObjects.Add(obj);
 		}
+
+        public void RemoveObject(PooledObject obj)
+        {
+            availableObjects.Remove(obj);
+        }
 	}
 }

@@ -7,9 +7,11 @@
 using UnityEngine;
 using System;
 
-namespace DevBoost.Utilities {
+namespace DevBoost.Utilities 
+{
 
-	public class PooledObject : MonoBehaviour {
+	public class PooledObject : MonoBehaviour 
+    {
 
 		[NonSerialized]
 		ObjectPool poolInstanceForPrefab;
@@ -18,24 +20,18 @@ namespace DevBoost.Utilities {
         /// Sets the pool handler.
         /// </summary>
         /// <value>The pool handler.</value>
-		public ObjectPool poolHandler { 
+		public ObjectPool poolHandler 
+        { 
 			private get; 
 			set; 
-		}
-
-        /// <summary>
-        /// Gets the instance.
-        /// </summary>
-        /// <value>The instance.</value>
-		public ObjectPool instance {
-			get { return poolInstanceForPrefab;}
 		}
 
         /// <summary>
         /// Spawn this instance.
         /// </summary>
         /// <returns>The spawn.</returns>
-		public PooledObject Spawn() {
+		public PooledObject Spawn() 
+        {
 			if (poolInstanceForPrefab == null)
 				poolInstanceForPrefab = ObjectPool.CreateObjectPool(this);
 			
@@ -46,11 +42,21 @@ namespace DevBoost.Utilities {
         /// <summary>
         /// Returns to pool.
         /// </summary>
-		public void ReturnToPool () {
+		public void ReturnToPool () 
+        {
 			if (poolHandler)
 				poolHandler.AddObject(this);
 			else
 				Destroy(gameObject);
 		}
-	}
+
+        /// <summary>
+        /// Ons the destroy.
+        /// </summary>
+        private void OnDestroy()
+        {
+            if (poolHandler)
+                poolHandler.RemoveObject(this);
+        }
+    }
 }

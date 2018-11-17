@@ -23,7 +23,39 @@ namespace DevBoost
         }
     }
 
-	public static class RectTransformExtensions
+    public static class VectorExtention
+    {
+        public static string ToStringFull(this Vector3 target)
+        {
+            return string.Format("{0},{1},{2}", target.x, target.y, target.z);
+        }
+
+        #region Vector3
+        public static Vector3 RandomX(this Vector3 target, float min, float max)
+        {
+            target.x = UnityEngine.Random.Range(min, max);
+            return target;
+        }
+        public static Vector3 RandomY(this Vector3 target, float min, float max)
+        {
+            target.y = UnityEngine.Random.Range(min, max);
+            return target;
+        }
+        public static Vector3 RandomZ(this Vector3 target, float min, float max)
+        {
+            target.z = UnityEngine.Random.Range(min, max);
+            return target;
+        }
+        public static Vector3 RandomXZ(this Vector3 target, float min, float max)
+        {
+            target.x = UnityEngine.Random.Range(min, max);
+            target.z = UnityEngine.Random.Range(min, max);
+            return target;
+        }
+        #endregion
+    }
+
+    public static class RectTransformExtensions
     {
         public static void SetDefaultScale(this RectTransform trans)
         {
@@ -97,6 +129,17 @@ namespace DevBoost
         }
     }
 
+    public static class GuidExtensions
+    {
+        #region Guid
+        public static ulong ToUInt64(this System.Guid target)
+        {
+            byte[] guidAsBytes = target.ToByteArray();
+            return System.BitConverter.ToUInt64(guidAsBytes, 0);
+        }
+
+        #endregion
+    }
 
     public class IosCompatible
     {
@@ -321,8 +364,49 @@ namespace DevBoost
         {
             t.localPosition = new Vector3(newX, t.localPosition.y, newZ);
         }
-
-
-
     }
+
+
+    public static class ReflectionExtensions
+    {
+        private static PropertyInfo GetPropertyInfo(Type type, string propertyName)
+        {
+            PropertyInfo propInfo = null;
+            do
+            {
+                propInfo = type.GetProperty(propertyName,
+                       BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                type = type.BaseType;
+            }
+            while (propInfo == null && type != null);
+            return propInfo;
+        }
+
+        public static object GetPropertyValue(this object obj, string propertyName)
+        {
+            if (obj == null)
+                throw new ArgumentNullException("obj");
+            Type objType = obj.GetType();
+            PropertyInfo propInfo = GetPropertyInfo(objType, propertyName);
+            if (propInfo == null)
+                throw new ArgumentOutOfRangeException("propertyName",
+                  string.Format("Couldn't find property {0} in type {1}", propertyName, objType.FullName));
+            return propInfo.GetValue(obj, null);
+        }
+
+        public static void SetPropertyValue(this object obj, string propertyName, object val)
+        {
+            if (obj == null)
+                throw new ArgumentNullException("obj");
+            Type objType = obj.GetType();
+            PropertyInfo propInfo = GetPropertyInfo(objType, propertyName);
+            if (propInfo == null)
+                throw new ArgumentOutOfRangeException("propertyName",
+                  string.Format("Couldn't find property {0} in type {1}", propertyName, objType.FullName));
+            propInfo.SetValue(obj, val, null);
+        }
+    }
+
+
+
 }

@@ -17,6 +17,8 @@ namespace ActionBehaviour
     public class SingletonActionNode<T> : ActionNode where T : SingletonActionNode<T>
     {
 
+        [SerializeField] private SingletonType m_SingletonType = SingletonType.DestroyOnLoad;
+
         public static T Instance
         {
             get;
@@ -44,9 +46,13 @@ namespace ActionBehaviour
         // Awake
         protected void Awake()
         {
-            Log.Trace("Awake singleton : {0}", typeof(T));
+            Log.Trace("Awake singleton AnctionNode : {0},{1}", typeof(T), m_SingletonType);
             if (null == Instance)
+            {
                 Instance = this as T;
+                if (m_SingletonType == SingletonType.DontDestroyOnLoad)
+                    DontDestroyOnLoad(this.gameObject);
+            }
         }
 
         static protected T Instantiate()
@@ -77,7 +83,10 @@ namespace ActionBehaviour
             }
 
             if (type == SingletonType.DontDestroyOnLoad)
+            {
+                m_SingletonType = type;
                 DontDestroyOnLoad(this.gameObject);
+            }
         }
         // Destroy
         public static void SelfDestroy()
