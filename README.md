@@ -1,12 +1,8 @@
-#DevBoost
+## DevBoost
 The scripts to help a developer make a game or some sort of logic without sequence logic
 
 ## System Requirements
-Unity 2017.1.0 or later versions. Feel free to try older version
-
-
-![code](https://github.com/baboring/MineField/blob/master/Docs/sample1.jpg)
-
+Unity 2017.1.0 or later versions.
 
 ## License
 MIT License
