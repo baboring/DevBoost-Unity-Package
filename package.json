@@ -1,0 +1,12 @@
+{
+	"name": "com.baboring.devbooster-unity-package",
+	"version": "1.0.0",
+	"displayName": "DevBooster Unity Package",
+	"description": "essential code package to buil up of the game project",
+	"unity": "2019.4",
+	"author": {
+		"name": "Benjamin Junghwan Park",
+		"email": "baboring@gmail.com",
+		"url": ""
+	}
+}
