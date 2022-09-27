@@ -3,6 +3,5 @@
 /obj
 /Library
 /Temp
-/Assets/NaughtyAttributes
 *.csproj
 *.sln
