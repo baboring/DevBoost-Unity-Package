@@ -10,6 +10,22 @@ using System.Reflection;
 
 namespace DevBoost
 {
+
+    public static class GameObjectExtention
+    {
+        public static bool IsNull<T>(this T myObject, string message = "") where T : UnityEngine.Object
+        {
+            if (!myObject)
+            {
+                if (!string.IsNullOrEmpty(message))
+                    Debug.LogError("The object is null! " + message);
+                return true;
+            }
+
+            return false;
+        }
+    }
+
     public static class TransformExtention
     {
         public static Transform Clear(this Transform transform)
@@ -53,6 +69,30 @@ namespace DevBoost
             return target;
         }
         #endregion
+    }
+
+    public static class ScrollRectExtensions
+    {
+        public static void SnapTo(this UnityEngine.UI.ScrollRect scrollRect, RectTransform contentPanel, RectTransform target)
+        {
+            Canvas.ForceUpdateCanvases();
+
+            contentPanel.anchoredPosition =
+                (Vector2)scrollRect.transform.InverseTransformPoint(contentPanel.position)
+                - (Vector2)scrollRect.transform.InverseTransformPoint(target.position);
+        }
+
+        public static Vector2 GetSnapToPositionToBringChildIntoView(this UnityEngine.UI.ScrollRect scrollRect, RectTransform child)
+        {
+            Canvas.ForceUpdateCanvases();
+            Vector2 viewportLocalPosition = scrollRect.viewport.localPosition;
+            Vector2 childLocalPosition = child.localPosition;
+            Vector2 result = new Vector2(
+                0 - (viewportLocalPosition.x + childLocalPosition.x),
+                0 - (viewportLocalPosition.y + childLocalPosition.y)
+            );
+            return result;
+        }
     }
 
     public static class RectTransformExtensions
@@ -119,10 +159,29 @@ namespace DevBoost
             SetSize(trans, new Vector2(trans.rect.size.x, newSize));
         }
 
+        public static void SetPadding(this RectTransform rect, float horizontal, float vertical)
+        {
+            rect.offsetMax = new Vector2(-horizontal, -vertical);
+            rect.offsetMin = new Vector2(horizontal, vertical);
+        }
+
+        public static void SetPadding(this RectTransform rect, float left, float top, float right, float bottom)
+        {
+            rect.offsetMax = new Vector2(-right, -top);
+            rect.offsetMin = new Vector2(left, bottom);
+        }
+
     }
 
     public static class StringExtensions
     {
+        public static string Truncate(this string value, int maxLength)
+        {
+            if (value == null)
+                return null;
+
+            return value.Substring(0, Math.Min(value.Length, maxLength));
+        }
         public static bool StartsWithAny(this string s, IEnumerable<string> items)
         {
             return items.Any(i => s.StartsWith(i));

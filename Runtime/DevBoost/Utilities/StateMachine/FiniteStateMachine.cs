@@ -1,6 +1,6 @@
 ﻿/********************************************************************
 	created:	2014/12/11
-	filename:	ButtonHandler.cs
+	filename:	FiniteStateMachine.cs
 	author:		Benjamin
 	purpose:	[FSM]
 *********************************************************************/
@@ -9,7 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace TTrainer
+namespace DevBoost.Utilities
 {
 	public delegate void Callback();
 
@@ -74,9 +74,9 @@ namespace TTrainer
 		protected Dictionary<StateTransition<T>, System.Delegate> mTransExcute;
 		protected Dictionary<StateTransition<T>, System.Delegate> mTransEnter;
 
-		protected Dictionary<StateTransition<T>, IEnumerable> mTransEnumerator;	// 코루틴 전용
+		protected Dictionary<StateTransition<T>, IEnumerable> mTransEnumerator;
 
-		StateTransition<T> currTransExcute = null;
+		public StateTransition<T> currTransExcute { get; private set; }
 		// Public functions
 		// ----------------------------------------
 		public FiniteStateMachine()
@@ -87,30 +87,30 @@ namespace TTrainer
 			mTransEnumerator = new Dictionary<StateTransition<T>, IEnumerable>();
 		}
 
-		// 처음 시작 상태 설정
 		public void Initialize(T state) { 
 			mState = state;
 			mPrevState = state;
 		}
 
-		// 상태 전이 등록
-		public void AddTransition(T init, T end,
+		public StateTransition<T> AddTransition(T init, T end,
 			Callback _callback_excute,
-			Callback _callback_exit = null,
 			Callback _callback_enter = null,
+			Callback _callback_exit = null,
 			IEnumerable _routine = null)
 		{
 			StateTransition<T> tr = new StateTransition<T>(init, end);
 
 			if (mTransExcute.ContainsKey(tr)) {
 				Debug.LogErrorFormat("[FSM] Transition: {0} - {1} exists already." , tr.GetInitState(),tr.GetEndState());
-				return;
+				return null;
 			}
 
 			mTransEnter.Add(tr, _callback_enter);
 			mTransExcute.Add(tr, _callback_excute);
 			mTransExit.Add(tr, _callback_exit);
 			mTransEnumerator.Add(tr, _routine);
+
+            return tr;
 
 			//Debug.Log("[FSM] Added transition " + mTransExcute.Count + ": " + tr.GetInitState() + " - " + tr.GetEndState() + ", Callback: " + _callback_excute);
 		}
@@ -197,7 +197,6 @@ namespace TTrainer
 		public T GetState() { return mState; }
 		public T GetPrevState() { return mPrevState; }
 
-		// 주기적으로 실행 할 것...
 		public void Update() {
 			_DoCallback(mTransExcute, currTransExcute);
 		}
