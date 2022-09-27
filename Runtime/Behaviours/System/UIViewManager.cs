@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace ActionBehaviour {
+namespace DevBoost.ActionBehaviour {
 
     using DevBoost.Utilities;
 

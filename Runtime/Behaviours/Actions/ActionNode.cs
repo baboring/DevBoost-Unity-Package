@@ -5,14 +5,9 @@
 *  Purpose:  []
 ****************************************************/
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace ActionBehaviour {
-
-	using DevBoost.Utilities;
-    using NaughtyAttributes;
+namespace DevBoost.ActionBehaviour {
 
     abstract public class ActionNode<T> : ActionNode where T : class
     {
@@ -25,27 +20,16 @@ namespace ActionBehaviour {
 
 		public enum LogMode { All, JustErrors };
 		static LogMode m_LogMode = LogMode.All;
-	
-
-		[SerializeField]
-		public string comments = null;
-
-        [Button("Execute(Click)")]
-        private void _RunInEdtior() {
-            Execute();
-        }
 
         protected override ActionState OnUpdate() {
             if (state != ActionState.None)
                 return state;
 
-            if(null != comments && comments.Length > 0)
-                Log(LogType.Log, comments);
-
 			return ActionState.Success;
 		}
 
-		private static void Log(LogType logType, string text)
+        [System.Diagnostics.Conditional("FILE_LOG")]
+		protected static void Log(LogType logType, string text)
 		{
 			if (logType == LogType.Error)
                 Debug.LogError("[ActionNode] " + text);

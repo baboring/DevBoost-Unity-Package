@@ -1,6 +1,5 @@
-﻿#if (UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX) && FILELOG
+﻿#if (UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX) && FILE_LOG
 #define SAVE_ENABLED
-//#define PROFILE
 #endif
 
 using System;
@@ -16,16 +15,20 @@ using System.Text;
 
 namespace DevBoost.Utilities {
 
-    internal class Log : SingletonMono<Log>
+    public class Log : SingletonMono<Log>
     {
         //-------------------------------------------------------------------------------------------------------------------------
-        [SerializeField] private string LogFolder = "Logs";
-        [SerializeField] private bool IsEchoToConsole = true;
-        [SerializeField] private bool IsAddTimeStamp = true;
-        [SerializeField] private bool IsDeleteOnStart = true;
-        [SerializeField] private bool IsPersistentDataPath = false;
+        [SerializeField] private string logFile = "FileLog";
+        [SerializeField] private string logFolder = "Logs";
+        [SerializeField] private string timeStamp = "{0:yyyy-MM-dd_HH.mm.ss}{1}";
+        [SerializeField] private bool isCaptureLog = true;
+        [SerializeField] private bool isEchoToConsole = true;
+        [SerializeField] private bool isAddtimeStamp = true;
+        [SerializeField] private bool isDeleteOnStart = true;
+        [SerializeField] private bool isPersistentDataPath = false;
         //-------------------------------------------------------------------------------------------------------------------------
 
+        public bool IsCaptureLog { get { return this.isCaptureLog; } }
 #if SAVE_ENABLED
         private StreamWriter OutputStream;
 #endif
@@ -33,7 +36,7 @@ namespace DevBoost.Utilities {
         protected new void Awake()
         {
             base.Awake();
-            CreateLogfile();
+            CreatelogFile();
 
             entries = new List<Entry>(maxEntries);
             if (_isVisible)
@@ -42,36 +45,36 @@ namespace DevBoost.Utilities {
                 SetVisible(true);
             }
 
-#if SAVE_ENABLED
-            Application.logMessageReceived += CaptureLog;
-#endif
+            if(isCaptureLog)
+                Application.logMessageReceived += CaptureLog;
 
         }
 
-        void CreateLogfile()
+        void CreatelogFile()
         {
 #if SAVE_ENABLED
             int index = 0;
             DateTime now = DateTime.Now;
-            string filename = String.Empty;
+            string filename = logFile;
 
-            filename = String.Format(saveFilename, now, index > 0 ? "_" + index : "");
-
-            // for dev
-            if (Application.isEditor)
-                filename = "Log.log";
-
-            if (IsPersistentDataPath && !Application.isEditor)
+            // udate file name and path
+            if (!Application.isEditor)
             {
-                LogFolder = Application.persistentDataPath + "/" + LogFolder;
+                filename = logFile + " " + String.Format(timeStamp, now, index > 0 ? "_" + index : "");
+
+                if (isPersistentDataPath)
+                    logFolder = Application.persistentDataPath + "/" + logFolder;
             }
 
-            if (LogFolder.Length > 0)
+            filename += ".log";
+
+
+            if (logFolder.Length > 0)
             {
-                System.IO.Directory.CreateDirectory(LogFolder);
-                filename = LogFolder + "/" + filename;
+                System.IO.Directory.CreateDirectory(logFolder);
+                filename = logFolder + "/" + filename;
             }
-            if (IsDeleteOnStart)
+            if (isDeleteOnStart)
                 File.Delete(filename);
             // Open the log file to append the new log to it.
             OutputStream = new StreamWriter(filename, true);
@@ -79,25 +82,26 @@ namespace DevBoost.Utilities {
 #endif
         }
 
-        void OnDestory()
-        {
 #if SAVE_ENABLED
+        protected new void OnDestroy()
+        {
             if (OutputStream != null)
             {
                 OutputStream.Close();
                 OutputStream = null;
             }
-#endif
+            base.OnDestroy();
         }
+#endif
 
-        private void Write(string message, bool isTimeStamp = true)
+        private void Write(string message, bool istimeStamp = true)
         {
 
 #if SAVE_ENABLED
             // window debug message
             System.Diagnostics.Debug.WriteLine(message);
 
-            if (IsAddTimeStamp && isTimeStamp)
+            if (isAddtimeStamp && istimeStamp)
             {
                 DateTime now = DateTime.Now;
                 message = string.Format("[{0:H:mm:ss}] {1}", now, message);
@@ -114,37 +118,24 @@ namespace DevBoost.Utilities {
         }
 
 
-        [Conditional("FILELOG"), Conditional("PROFILE")]
+        [Conditional("FILE_LOG")]
         public static void Trace(String format, params object[] args)
         {
             if (Instance != null)
             {
-                if (Instance.IsEchoToConsole)
+                if (Instance.isEchoToConsole)
+                {
                     UnityEngine.Debug.Log(string.Format(format, args));
-                else
-                    Instance.Write(string.Format(format, args));
+                    if (Instance.isCaptureLog)
+                        return;
+                }
+
+                Instance.Write(string.Format(format, args));
             }
             //else
             //    // Fallback if the debugging system hasn't been initialized yet.
             //    UnityEngine.Debug.Log(Message);
         }
-
-        [Conditional("PROFILE")]
-        public static void Profile(String format, params object[] args)
-        {
-            if (Instance != null)
-            {
-                if (Instance.IsEchoToConsole)
-                    UnityEngine.Debug.Log(string.Format(format, args));
-                else
-                    Instance.Write(string.Format(format, args));
-            }
-            //else
-            //    // Fallback if the debugging system hasn't been initialized yet.
-            //    UnityEngine.Debug.Log(Message);
-        }
-
-
 
 
         [Serializable]
@@ -222,7 +213,6 @@ namespace DevBoost.Utilities {
         public GUISkin guiSkin = null;
         public int guiDepth = 0;
 
-        public string saveFilename = "console_{0:yyyy-MM-dd_HH.mm.ss}{1}.log";
 
         public bool collapse = false;
         public bool autoScroll = true;
@@ -254,12 +244,14 @@ namespace DevBoost.Utilities {
         }
 
 
+#if DEBUG_CONFIG            
         void Update()
         {
             if (showByKey != KeyCode.None && Input.GetKeyDown(showByKey) && Input.GetKey(KeyCode.LeftControl))
                 SetVisible(!_isVisible);
         }
-
+#endif
+#if FILE_LOG
         void OnGUI()
         {
             if (!_isVisible) return;
@@ -282,7 +274,7 @@ namespace DevBoost.Utilities {
             GUI.depth = oldDepth;
             GUI.color = oldColor;
         }
-
+#endif
         void DrawGUI()
         {
             if (null == entries)
@@ -451,7 +443,7 @@ namespace DevBoost.Utilities {
 
             do
             {
-                filename = String.Format(saveFilename, now, index > 0 ? "_" + index : "");
+                filename = String.Format(timeStamp, now, index > 0 ? "_" + index : "");
 
                 index++;
                 if (index == 1000)

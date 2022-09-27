@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace DevBoost
 {
-    using ActionBehaviour;
+    using DevBoost.ActionBehaviour;
     public class AssetCreateMenu
     {
         [MenuItem("Assets/Create/Data/StringSet")]

@@ -10,7 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ActionBehaviour
+namespace DevBoost.ActionBehaviour
 {
     using NaughtyAttributes;
 
@@ -26,8 +26,11 @@ namespace ActionBehaviour
         public void Toggle()
         {
             for (int i = 0; i < objects.Length; ++i)
-                if(objects[i])
+            {
+                Debug.Assert(objects[i] != null, gameObject.name + " has an error nodes !!");
+                if (objects[i] != null)
                     objects[i].SetActive(!objects[i].activeSelf);
+            }
         }
 
         protected override ActionState OnUpdate() {

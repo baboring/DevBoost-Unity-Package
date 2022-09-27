@@ -5,12 +5,11 @@
 *  Purpose:  []
 ****************************************************/
 
+using DevBoost.Utilities;
 using UnityEngine;
 
-namespace ActionBehaviour
+namespace DevBoost.ActionBehaviour
 {
-    using DevBoost.Utilities;
-
     /// <summary>
     /// Action starter.
     /// </summary>
@@ -46,7 +45,7 @@ namespace ActionBehaviour
         // Awake
         protected void Awake()
         {
-            Log.Trace("Awake singleton AnctionNode : {0},{1}", typeof(T), m_SingletonType);
+            DevBoost.Utilities.Log.Trace("Awake singleton AnctionNode : {0},{1}", typeof(T), m_SingletonType);
             if (null == Instance)
             {
                 Instance = this as T;
@@ -79,7 +78,7 @@ namespace ActionBehaviour
             if (Instance == null)
             {
                 Instance = this.GetComponent<T>();
-                Log.Trace("[ Singleton - Instantiated ] {0}", typeof(T).ToString());
+                DevBoost.Utilities.Log.Trace("[ Singleton - Instantiated ] {0}", typeof(T).ToString());
             }
 
             if (type == SingletonType.DontDestroyOnLoad)

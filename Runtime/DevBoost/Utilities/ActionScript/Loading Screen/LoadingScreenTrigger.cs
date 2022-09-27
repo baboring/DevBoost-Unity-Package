@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using DevBoost.ActionScript;
 
-
-namespace DevBoost.Utilities {
-	using DevBoost.ActionScript;
+namespace DevBoost.Utilities 
+{
 	public class LoadingScreenTrigger : ActionTrigger {
 
 		// Use this for initialization

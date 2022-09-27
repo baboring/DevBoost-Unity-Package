@@ -10,7 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ActionBehaviour {
+namespace DevBoost.ActionBehaviour {
 
     using NaughtyAttributes;
 
@@ -28,8 +28,12 @@ namespace ActionBehaviour {
 				return result;
 			
 			for( int i=0;i < objects.Length; ++i )
-				objects[i].SetActive(true);
-			return ActionState.Success;
+            {
+                Debug.Assert(objects[i] != null, gameObject.name + " has an error nodes !!");
+                if (null != objects[i])
+                    objects[i].SetActive(true);
+            }
+            return ActionState.Success;
 		}
 	}
 

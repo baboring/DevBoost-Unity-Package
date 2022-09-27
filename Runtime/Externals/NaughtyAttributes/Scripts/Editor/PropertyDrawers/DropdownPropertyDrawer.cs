@@ -61,41 +61,9 @@ namespace NaughtyAttributes.Editor
             // type is ScriptableObject
             else if (valuesFieldInfo.GetValue(target) is ScriptableObject) {
                 // Current value index, values and display options
-                ActionBehaviour.StringSet stringSet = (ActionBehaviour.StringSet)valuesFieldInfo.GetValue(target);
-                if (null != stringSet)
-                {
-                    // Current value
-                    object selectedValue = fieldInfo.GetValue(target);
-
-                    Debug.Log(stringSet.ToString());
-                    List<string> valuesList = stringSet.GetList();
-                    object[] values = new object[valuesList.Count];
-                    string[] displayOptions = new string[valuesList.Count];
-
-                    for (int i = 0; i < values.Length; i++)
-                    {
-                        object value = valuesList[i];
-                        values[i] = value;
-                        displayOptions[i] = value.ToString();
-                    }
-
-                    // Selected value index
-                    int selectedValueIndex = Array.IndexOf(values, selectedValue);
-                    if (selectedValueIndex < 0)
-                    {
-                        Array.Resize<object>(ref values, values.Length + 1);
-                        Array.Resize<string>(ref displayOptions, displayOptions.Length + 1);
-                        selectedValueIndex = values.Length - 1;
-                        values[selectedValueIndex] = selectedValue;
-                        displayOptions[selectedValueIndex] = "[new]" + selectedValue.ToString();
-                    }
-                    // Draw the dropdown
-                    this.DrawDropdown(target, fieldInfo, property.displayName, selectedValueIndex, values, displayOptions);
-                }
-                else {
-                    this.DrawWarningBox(typeof(DropdownAttribute).Name + " Wrong Droplist set");
-                    EditorGUILayout.PropertyField(property, true);
-                }
+                this.DrawWarningBox(typeof(DropdownAttribute).Name + " Wrong Droplist set");
+                EditorGUILayout.PropertyField(property, true);
+      
             }
             // type is IDropdownList
             else if (valuesFieldInfo.GetValue(target) is IDropdownList)

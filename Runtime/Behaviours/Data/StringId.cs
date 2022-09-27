@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace ActionBehaviour
+namespace DevBoost.ActionBehaviour
 {
     using NaughtyAttributes;
 

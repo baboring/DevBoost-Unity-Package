@@ -7,7 +7,7 @@
 
 using UnityEngine;
 
-namespace ActionBehaviour {
+namespace DevBoost.ActionBehaviour {
 
 
 
@@ -18,7 +18,7 @@ namespace ActionBehaviour {
 
 		void Start() {
 			
-			if( StartOption.AutoStart == startType )
+			if( StartOption.Start == startType )
 				base.ExecuteInvoke();
 		}
 

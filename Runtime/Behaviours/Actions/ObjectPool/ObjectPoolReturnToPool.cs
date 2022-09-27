@@ -7,7 +7,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace ActionBehaviour {
+namespace DevBoost.ActionBehaviour {
 
 	using DevBoost.Utilities;
 

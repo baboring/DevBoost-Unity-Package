@@ -1,18 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 using DevBoost.ActionScript;
 
-[CreateAssetMenu (menuName = "ActionObject/LoadingScreenInfo")]
-public class LoadingScreenInfo : ActionObject {
+namespace DevBoost
+{
 
-	[SerializeField]
-	protected GameObject prefab;
-	public override void Initialize(GameObject obj) {
+	[CreateAssetMenu(menuName = "ActionObject/LoadingScreenInfo")]
+	public class LoadingScreenInfo : ActionObject
+	{
 
-	}
-	public override void TriggerEvent(object arg = null) {
-		
+		[SerializeField]
+		protected GameObject prefab;
+		public override void Initialize(GameObject obj)
+		{
+
+		}
+		public override void TriggerEvent(object arg = null)
+		{
+
+		}
 	}
 }
