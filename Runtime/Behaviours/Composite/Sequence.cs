@@ -6,34 +6,28 @@
 ****************************************************/
 
 using System.Collections;
-using UnityEngine;
-using NaughtyAttributes;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 
-namespace ActionBehaviour
-{
+namespace ActionBehaviour {
 
-    public class Sequence : ActionNode
-    {
+    using NaughtyAttributes;
+
+	public class Sequence : ActionNode {
 
         [ReorderableList]
-        [SerializeField]
-        protected ActionNode[] childNodes;
+		[SerializeField]
+		protected ActionNode[] childNodes;
 
-        private int m_index = 0;
+		private int m_index = 0;
         AsyncProcessing async = null;
 
-        public IEnumerable<ActionNode> Children => childNodes.Cast<ActionNode>();
-
-        protected override void OnReset()
-        {
+		protected override void OnReset() {
+            
             base.OnReset();
 
-            if (null != async)
-            {
-                if (null != async.backgroundWorking)
-                    StopCoroutine(async.backgroundWorking);
+            if(null != async && null != async.backgroundWorking) {
+                StopCoroutine(async.backgroundWorking);
                 async = null;
             }
 
@@ -41,14 +35,12 @@ namespace ActionBehaviour
 
             // reset children
             ResetChildren();
-        }
+		}
 
         // reset children
-        protected void ResetChildren()
-        {
+        protected void ResetChildren() {
 
-            if (childNodes != null && childNodes.Length > 0)
-            {
+            if(childNodes != null && childNodes.Length > 0) {
                 foreach (var node in childNodes)
                     if (node != null)
                         node.Reset();
@@ -56,29 +48,25 @@ namespace ActionBehaviour
         }
 
 
-        protected override ActionState OnUpdate()
-        {
+        protected override ActionState OnUpdate() {
 
-            if (null == async || !async.isDone)
-            {
+            if(null == async || !async.isDone) {
                 ActionState result = base.OnUpdate();
-                if (result != ActionState.Success && result != ActionState.Running)
+                if (result != ActionState.Success)
                     return result;
             }
 
             state = this.UpdateSequence();
-            if (ActionState.Running == state && null == async)
-            {
+            if(ActionState.Running == state && null == async) {
                 async = new AsyncProcessing(StartCoroutine(CoUpdateSequence()));
-                async.onCompleted += OnSuccess;
             }
 
             return state;
-        }
+		}
 
         // Coroutine for updating sequence multi
-        IEnumerator CoUpdateSequence()
-        {
+        IEnumerator CoUpdateSequence() {
+
             // performs to update Sequence
             while (m_index < childNodes.Length)
             {
@@ -91,9 +79,8 @@ namespace ActionBehaviour
         }
 
         // inner update sequnce
-        ActionState UpdateSequence()
-        {
-
+        ActionState UpdateSequence() {
+            
             ActionState result = ActionState.Success;
             while (m_index < childNodes.Length)
             {
@@ -102,18 +89,16 @@ namespace ActionBehaviour
                 if (childNodes[m_index] == this)
                     return ActionState.Error;
 
-                result = childNodes[m_index]?.Execute(false) ?? ActionState.Error;
+                result = childNodes[m_index].Execute(false);
                 if (ActionState.Success != result)
                     return result;
-                // log..
-                //ActionNode.Log(LogType.Log, $"{childNodes[m_index]} success!");
                 ++m_index;
             }
 
             return result;
         }
 
-    }
+	}
 
 
 }
