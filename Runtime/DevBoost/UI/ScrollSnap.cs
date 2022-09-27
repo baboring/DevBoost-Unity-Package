@@ -70,8 +70,9 @@ namespace UI {
 
 		}
 
-        void OnEnable()
+        protected override void OnEnable()
 		{
+			base.OnEnable();
 			StartCoroutine(SetupCellSize());
 		}
 

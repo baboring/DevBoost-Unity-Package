@@ -6,7 +6,7 @@ using UnityEngine;
 using System.ComponentModel;
 using System;
 using System.Reflection;
-
+using System.Threading.Tasks;
 
 namespace DevBoost
 {
@@ -36,6 +36,55 @@ namespace DevBoost
                     GameObject.Destroy(child.gameObject);
             }
             return transform;
+        }
+
+        public static Transform FirstChildOrDefault(this Transform parent, Func<Transform, bool> query)
+        {
+            if (parent.childCount == 0)
+                return null;
+
+            Transform result = null;
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                var child = parent.GetChild(i);
+                if (query(child))
+                    return child;
+
+                result = FirstChildOrDefault(child, query);
+                if (null != result)
+                    return result;
+            }
+
+            return null;
+        }
+
+
+        public static List<Transform> FindChildrenRecursively(this Transform parent, Func<Transform, bool> query)
+        {
+            if (parent.childCount == 0)
+                return null;
+
+            List<Transform> listFind = null;
+            List<Transform> result = null;
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                var child = parent.GetChild(i);
+                if (query(child))
+                {
+                    if (listFind == null)
+                        listFind = new List<Transform>();
+                    listFind.Add(child);
+                }
+                result = FindChildrenRecursively(child, query);
+                if(result != null)
+                {
+                    if (listFind == null)
+                        listFind = new List<Transform>();
+                    listFind.AddRange(result);
+                }
+            }
+
+            return listFind;
         }
     }
 
@@ -398,6 +447,16 @@ namespace DevBoost
             return result;
         }
 
+
+        static public void RecursivelyChangeLayer(this Transform trans, int layer)
+        {
+            for (int i = 0; i < trans.childCount; i++)
+            {
+                trans.GetChild(i).gameObject.layer = layer;
+                trans.GetChild(i).RecursivelyChangeLayer(layer);
+            }
+        }
+
         // transforms
         static public void SetLocalPosX(this Transform t, float newX)
         {
@@ -467,5 +526,93 @@ namespace DevBoost
     }
 
 
+    public static class AnimatorExtensions
+    {
+        // Reset All Parameters (Clear all)
+        public static void ResetAllParameters(this Animator animator)
+        {
+            if (null == animator)
+                return;
+            // Reset All animator flag
+            AnimatorControllerParameter[] parameters = animator.parameters;
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                AnimatorControllerParameter parameter = parameters[i];
+                switch (parameter.type)
+                {
+                    case AnimatorControllerParameterType.Int:
+                        animator.SetInteger(parameter.name, parameter.defaultInt);
+                        break;
+                    case AnimatorControllerParameterType.Float:
+                        animator.SetFloat(parameter.name, parameter.defaultFloat);
+                        break;
+                    case AnimatorControllerParameterType.Bool:
+                        animator.SetBool(parameter.name, parameter.defaultBool);
+                        break;
+                    case AnimatorControllerParameterType.Trigger:
+                        animator.ResetTrigger(parameter.name);
+                        break;
+                }
+            }
+        }
+
+        public static bool IsContainParam(this Animator animator, string param)
+        {
+            Debug.Assert(animator != null, "animator is null");
+
+            if (animator == null || !animator.isActiveAndEnabled || animator.runtimeAnimatorController == null)
+                return false;
+
+            // Reset All animator flag
+            AnimatorControllerParameter[] parameters = animator.parameters;
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].name == param)
+                    return true;
+            }
+            return false;
+        }
+    }
+
+    public static class TaskEx
+    {
+        /// <summary>
+        /// Blocks while condition is true or timeout occurs.
+        /// </summary>
+        /// <param name="condition">The condition that will perpetuate the block.</param>
+        /// <param name="frequency">The frequency at which the condition will be check, in milliseconds.</param>
+        /// <param name="timeout">Timeout in milliseconds.</param>
+        /// <exception cref="TimeoutException"></exception>
+        /// <returns></returns>
+        public static async Task WaitWhile(Func<bool> condition, int frequency = 25, int timeout = -1)
+        {
+            var waitTask = Task.Run(async () =>
+            {
+                while (condition()) await Task.Delay(frequency);
+            });
+
+            if (waitTask != await Task.WhenAny(waitTask, Task.Delay(timeout)))
+                throw new TimeoutException();
+        }
+
+        /// <summary>
+        /// Blocks until condition is true or timeout occurs.
+        /// </summary>
+        /// <param name="condition">The break condition.</param>
+        /// <param name="frequency">The frequency at which the condition will be checked.</param>
+        /// <param name="timeout">The timeout in milliseconds.</param>
+        /// <returns></returns>
+        public static async Task WaitUntil(Func<bool> condition, int frequency = 25, int timeout = -1)
+        {
+            var waitTask = Task.Run(async () =>
+            {
+                while (!condition()) await Task.Delay(frequency);
+            });
+
+            if (waitTask != await Task.WhenAny(waitTask,
+                    Task.Delay(timeout)))
+                throw new TimeoutException();
+        }
+    }
 
 }

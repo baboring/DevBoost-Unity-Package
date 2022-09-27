@@ -12,9 +12,13 @@ namespace DevBoost.Utilities
 
 	public abstract class Singleton<T> : SingletonBase<T> where T : class, new()
 	{
-		static new public T Instance {
+        static object _lock = new object();
+        static new public T Instance {
 			get {
-                return _instance ?? Instantiate();
+                lock (_lock)
+                {
+                    return _instance ?? Instantiate();
+                }
             }
             set {
 				if (_instance != null)
@@ -116,7 +120,7 @@ namespace DevBoost.Utilities
                     Instance.OnDestroyListener = null;
                 }
 
-                DestroyObject(Instance.gameObject);
+                Destroy(Instance.gameObject);
                 Instance = null;
             }
 
@@ -130,7 +134,7 @@ namespace DevBoost.Utilities
 
 		void OnDestroy()
 		{
-			if (this == Instance)
+			if (_lock == null)
 				return;
             if (null != this.OnDestroyListener)
             {

@@ -1,6 +1,6 @@
 ﻿/* *************************************************
 *  Created:  2018-1-28 19:51:59
-*  File:     StringVar.cs
+*  File:     FloatVar.cs
 *  Author:   Benjamin
 *  Purpose:  []
 ****************************************************/
@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace DevBoost.ActionBehaviour
 {
-    // string var class
-    public class StringVar : NullableVar<string> {}
+    // vector2 var class
+    public class FloatVar : StrcutVar<float> {}
 
 }

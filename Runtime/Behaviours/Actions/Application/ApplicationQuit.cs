@@ -4,10 +4,9 @@
  * Description : quit current application
 --------------------------------------------------------------------- */
 
-using DevBoost.ActionBehaviour;
 using UnityEngine;
 
-namespace DevBoost.SMM
+namespace DevBoost.ActionBehaviour
 {
     public class ApplicationQuit : ActionNode
     {
