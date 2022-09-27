@@ -13,10 +13,19 @@ namespace DevBoost.Utilities
 
 	public abstract class SingletonBase<T> where T : class, new()
 	{
+		static protected bool m_ShuttingDown = false;
+
 		static protected T _instance;
 		static public T Instance
 		{
-			get { return _instance; }
+			get {
+				if (m_ShuttingDown)
+				{
+					Debug.LogWarning("[Singleton] Instance '" + typeof(T) + "' already destroyed. Returning null.");
+					return null;
+				}
+				return _instance; 
+			}
 			set
 			{
 				if (_instance != null)
@@ -44,7 +53,13 @@ namespace DevBoost.Utilities
 			_instance = null;
 		}
 
-
+		/// <summary>
+		/// set the setting shutting down
+		/// </summary>
+		private void OnApplicationQuit()
+		{
+			m_ShuttingDown = true;
+		}
 
 	}
 
