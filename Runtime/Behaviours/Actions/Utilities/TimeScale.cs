@@ -6,33 +6,33 @@
 *  Purpose:  []
 ****************************************************/
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace DevBoost.ActionBehaviour {
-
-	public class TimeScale : ActionNode {
+namespace DevBoost.ActionBehaviour
+{
+	public class TimeScale : ActionNode
+	{
 
 		[SerializeField] private float timeScale = 1;
 
-        protected override ActionState OnUpdate() {
+		protected override ActionState OnUpdate()
+		{
 
 			// parent update
 			ActionState result = base.OnUpdate();
-			if(result != ActionState.Success)
+			if (result != ActionState.Success)
 				return result;
-			
+
 			Time.timeScale = timeScale;
 
 			return ActionState.Success;
 		}
 
-        [NaughtyAttributes.Button("Test Run")]
-        private void DebugRun()
-        {
-            ExecuteInvoke();
-        }
-    }
+		[NaughtyAttributes.Button("Test Run")]
+		private void DebugRun()
+		{
+			ExecuteInvoke();
+		}
+	}
 
 }
