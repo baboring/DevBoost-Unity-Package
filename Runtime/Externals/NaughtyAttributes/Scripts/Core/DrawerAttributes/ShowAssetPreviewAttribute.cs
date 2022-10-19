@@ -5,29 +5,16 @@ namespace NaughtyAttributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
     public class ShowAssetPreviewAttribute : DrawerAttribute
     {
-        private int width;
-        private int height;
+        public const int DefaultWidth = 64;
+        public const int DefaultHeight = 64;
 
-        public ShowAssetPreviewAttribute(int width = 64, int height = 64)
-        {
-            this.width = width;
-            this.height = height;
-        }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
 
-        public int Width
+        public ShowAssetPreviewAttribute(int width = DefaultWidth, int height = DefaultHeight)
         {
-            get
-            {
-                return this.width;
-            }
-        }
-
-        public int Height
-        {
-            get
-            {
-                return this.height;
-            }
+            Width = width;
+            Height = height;
         }
     }
 }

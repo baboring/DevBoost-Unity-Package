@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 
 namespace NaughtyAttributes
@@ -7,19 +7,11 @@ namespace NaughtyAttributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
     public class DropdownAttribute : DrawerAttribute
     {
-        private string valuesFieldName;
+        public string ValuesName { get; private set; }
 
-        public DropdownAttribute(string valuesFieldName)
+        public DropdownAttribute(string valuesName)
         {
-            this.valuesFieldName = valuesFieldName;
-        }
-
-        public string ValuesFieldName
-        {
-            get
-            {
-                return this.valuesFieldName;
-            }
+            ValuesName = valuesName;
         }
     }
 
@@ -29,26 +21,26 @@ namespace NaughtyAttributes
 
     public class DropdownList<T> : IDropdownList
     {
-        private List<KeyValuePair<string, object>> values;
+        private List<KeyValuePair<string, object>> _values;
 
         public DropdownList()
         {
-            this.values = new List<KeyValuePair<string, object>>();
+            _values = new List<KeyValuePair<string, object>>();
         }
 
         public void Add(string displayName, T value)
         {
-            this.values.Add(new KeyValuePair<string, object>(displayName, value));
+            _values.Add(new KeyValuePair<string, object>(displayName, value));
         }
 
         public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
-            return this.values.GetEnumerator();
+            return _values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         public static explicit operator DropdownList<object>(DropdownList<T> target)
