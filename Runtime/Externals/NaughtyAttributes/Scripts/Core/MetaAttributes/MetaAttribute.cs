@@ -2,20 +2,7 @@
 
 namespace NaughtyAttributes
 {
-    public abstract class MetaAttribute : NaughtyAttribute
+    public class MetaAttribute : Attribute, INaughtyAttribute
     {
-        private int order = 0;
-
-        public int Order
-        {
-            get
-            {
-                return this.order;
-            }
-            set
-            {
-                this.order = value;
-            }
-        }
     }
 }
