@@ -7,11 +7,11 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using NaughtyAttributes;
 
 namespace DevBoost.ActionBehaviour {
 
 	using DevBoost.Utilities;
-    using NaughtyAttributes;
 
     public class UnloadScene : ActionNode {
 
