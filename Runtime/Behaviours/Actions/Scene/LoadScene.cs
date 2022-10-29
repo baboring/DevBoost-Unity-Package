@@ -6,10 +6,10 @@
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using NaughtyAttributes;
 
 namespace DevBoost.ActionBehaviour {
 
-    using NaughtyAttributes;
 
 	public enum LOAD_SCENE_METHOD {
 		Sync = 0,

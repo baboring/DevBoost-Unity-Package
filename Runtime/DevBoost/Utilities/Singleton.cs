@@ -103,7 +103,7 @@ namespace DevBoost.Utilities
                 Log.Trace("[ Singleton - Instantiated ] " + typeof(T).ToString());
             }
 
-            if (type == SingletonType.DontDestroyOnLoad)
+            if (type == SingletonType.DontDestroyOnLoad && type != m_SingletonType)
             {
                 m_SingletonType = type;
                 DontDestroyOnLoad(this.gameObject);
