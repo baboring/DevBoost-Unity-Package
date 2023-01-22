@@ -3,11 +3,7 @@
  * Author : Benjamin Park
  * Description : Canvas setup action
 --------------------------------------------------------------------- */
-using ActionBehaviour;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace DevBoost.ActionBehaviour
 {
