@@ -7,8 +7,7 @@ using DevBoost.Data;
 using System;
 using System.Reflection;
 using UnityEngine;
-
-#if UNITY_PIPELINE_URP && !PENDING_ISSUE
+#if UNITY_PIPELINE_URP
 using UnityEngine.Rendering.Universal;
 #endif
 
@@ -35,14 +34,14 @@ namespace DevBoost
         // Get Camera
         public Camera Camera { get; private set; }
 
-#if UNITY_PIPELINE_URP && !PENDING_ISSUE
+#if UNITY_PIPELINE_URP
         public UniversalAdditionalCameraData Data { get; private set; }
 #endif
 
         private void Awake()
         {
             Camera = this.GetComponent<Camera>();
-#if UNITY_PIPELINE_URP && !PENDING_ISSUE
+#if UNITY_PIPELINE_URP
             Data = Camera.GetUniversalAdditionalCameraData();
 #endif
         }
@@ -67,7 +66,7 @@ namespace DevBoost
         {
             CameraManager.Instance?.Remove(this);
         }
-#if UNITY_PIPELINE_URP && !PENDING_ISSUE
+#if UNITY_PIPELINE_URP
 
         public void AddToStack(CameraHandler cam)
         {

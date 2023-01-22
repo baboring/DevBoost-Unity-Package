@@ -13,7 +13,7 @@ namespace DevBoost
     using DevBoost.extension;
     using DevBoost.Utilities;
 
-#if UNITY_PIPELINE_URP && !PENDING_ISSUE
+#if UNITY_PIPELINE_URP
     using UnityEngine.Rendering.Universal;
 #endif
 
@@ -59,7 +59,7 @@ namespace DevBoost
 
         public List<CameraHandler> CameraObjects = new List<CameraHandler>();
 
-#if UNITY_PIPELINE_URP && !PENDING_ISSUE
+#if UNITY_PIPELINE_URP
         public CameraHandler BaseCamera => FindCamera(CameraRenderType.Base, CameraType.Default);
 #endif
         private new void Awake()
@@ -92,7 +92,7 @@ namespace DevBoost
                             .Assign(OnDestroyListener);
         }
 
-#if UNITY_PIPELINE_URP && !PENDING_ISSUE
+#if UNITY_PIPELINE_URP
          public CameraHandler FindCamera(CameraRenderType type, CameraType camType)
         {
             return m_lstCamera.Find(va => va.Data.renderType == type && va.Type == camType);
@@ -157,7 +157,7 @@ namespace DevBoost
             Debug.Log($"[TRACE] Camera Added: {cam.Type} | {cam.name}");
 
             Debug.Assert(cam.Camera != null,"Camera is null : " + cam.name);
-#if UNITY_PIPELINE_URP && !PENDING_ISSUE
+#if UNITY_PIPELINE_URP
 
             //if (cam.Type != CameraType.UICamera && cam.Data != null && cam.Data.renderType == CameraRenderType.Overlay)
             //    cam.Type = CameraType.Overlay;
@@ -203,7 +203,7 @@ namespace DevBoost
             Debug.Log($"[TRACE] Camera Removed :{cam.Type} | {cam.name}");
             m_lstCamera.Remove(cam);
 
-#if UNITY_PIPELINE_URP && !PENDING_ISSUE
+#if UNITY_PIPELINE_URP
             var baseCamera = this.BaseCamera;
 
             if (baseCamera == null)
