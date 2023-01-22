@@ -1,6 +1,6 @@
 {
 	"name": "com.baboring.devbooster-unity-package",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"displayName": "DevBooster",
 	"description": "essential code package to buil up of the game project",
 	"dependencies": {
