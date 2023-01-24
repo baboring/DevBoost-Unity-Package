@@ -31,18 +31,19 @@ public class RenderingPipelineDefines
         {
             AddDefine("UNITY_PIPELINE_URP");
         }
-        else
-        {
-            RemoveDefine("UNITY_PIPELINE_URP");
-        }
-        if (pipeline == PipelineType.HDPipeline)
-        {
-            AddDefine("UNITY_PIPELINE_HDRP");
-        }
-        else
-        {
-            RemoveDefine("UNITY_PIPELINE_HDRP");
-        }
+        //else
+        //{
+        //    RemoveDefine("UNITY_PIPELINE_URP");
+        //}
+
+        //if (pipeline == PipelineType.HDPipeline)
+        //{
+        //    AddDefine("UNITY_PIPELINE_HDRP");
+        //}
+        //else
+        //{
+        //    RemoveDefine("UNITY_PIPELINE_HDRP");
+        //}
     }
  
  
