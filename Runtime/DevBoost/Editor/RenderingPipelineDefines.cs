@@ -19,31 +19,32 @@ public class RenderingPipelineDefines
     {
         UpdateDefines();
     }
- 
     /// <summary>
     /// Update the unity pipeline defines for URP
     /// </summary>
     static void UpdateDefines()
     {
+#if UNITY_PIPELINE_URP_ENABLED
         var pipeline = GetPipeline();
- 
+
         if (pipeline == PipelineType.UniversalPipeline)
         {
             AddDefine("UNITY_PIPELINE_URP");
         }
-        //else
-        //{
-        //    RemoveDefine("UNITY_PIPELINE_URP");
-        //}
+        else
+        {
+            RemoveDefine("UNITY_PIPELINE_URP");
+        }
 
-        //if (pipeline == PipelineType.HDPipeline)
-        //{
-        //    AddDefine("UNITY_PIPELINE_HDRP");
-        //}
-        //else
-        //{
-        //    RemoveDefine("UNITY_PIPELINE_HDRP");
-        //}
+        if (pipeline == PipelineType.HDPipeline)
+        {
+            AddDefine("UNITY_PIPELINE_HDRP");
+        }
+        else
+        {
+            RemoveDefine("UNITY_PIPELINE_HDRP");
+        }
+#endif
     }
  
  
