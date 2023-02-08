@@ -2,15 +2,16 @@
   "name": "com.baboring.devbooster",
   "displayName": "DevBooster package",
   "version": "1.1.0",
+  "unity": "2020.3",
+  "author":"Ninedollars77"}  
   "description": "essential code package to buil up of the game project",
   "dependencies": {
     "com.dbrizov.naughtyattributes": "2.1.4"
   },
-  "unity": "2020.3",
-  "unityRelease": "43f1",
-  "author": {
-    "name": "Ninedollars77",
-    "email": "baboring@gmail.com",
-    "url": ""
+  "repository": {
+      "type": "git",
+      "url":"https://github.com/baboring/DevBoost-Unity-Package.git",
+      "revisiotn": "309cab53f17b784460b35b1e9f5b63db68d8ed84"
+
   }
 }
