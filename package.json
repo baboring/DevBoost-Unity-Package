@@ -4,7 +4,7 @@
 	"displayName": "DevBooster",
 	"description": "essential code package to buil up of the game project",
 	"dependencies": {
-		"com.dbrizov.naughtyattributes": "https://github.com/dbrizov/NaughtyAttributes.git#upm"
+		"com.dbrizov.naughtyattributes": "2.1.4"
 	},
 	"unity": "2020.3",
 	"unityRelease": "43f1",	
