@@ -4,9 +4,10 @@
 	"displayName": "DevBooster",
 	"description": "essential code package to buil up of the game project",
 	"dependencies": {
+		"com.dbrizov.naughtyattributes": "https://github.com/dbrizov/NaughtyAttributes.git#upm"
 	},
-	"unity": "2019.4",
-	"unityRelease": "39f1",	
+	"unity": "2020.3",
+	"unityRelease": "43f1",	
 	"author": {
 		"name": "Ninedollars77",
 		"email": "baboring@gmail.com",
