@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿// Unity simple CSV/object serialiser comes from [inbad/UnityCsvUtil] (https://github.com/sinbad/UnityCsvUtil) on the Github
+
+using UnityEngine;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Linq;
@@ -33,6 +35,12 @@ namespace DevBoost.Utilities {
 				using (var rdr = new StreamReader(stream)) {
 					return LoadObjects<T>(rdr, strict);
 				}
+			}
+		}
+
+		public static List<T> LoadObjects<T>(Stream stream, bool strict = true) where T : new() {
+			using (var rdr = new StreamReader(stream)) {
+				return LoadObjects<T>(rdr, strict);
 			}
 		}
 
@@ -234,9 +242,9 @@ namespace DevBoost.Utilities {
 				else
 					w.Write(",");
 
-				string val = f.GetValue(obj).ToString();
+				string val = f.GetValue(obj)?.ToString();
 				// Quote if necessary
-				if (val.IndexOfAny(quotedChars) != -1) {
+				if (val != null && val.IndexOfAny(quotedChars) != -1) {
 					val = string.Format("\"{0}\"", val);
 				}
 				w.Write(val);
@@ -259,7 +267,8 @@ namespace DevBoost.Utilities {
 
 		// Parse an object line based on the header, return true if any fields matched
 		private static bool ParseLineToObject(string line, Dictionary<string, int> fieldDefs, FieldInfo[] fi, object destObject, bool strict) {
-
+			if (line.Length > 0 && line[0] == '#')
+				return false;
 			string[] values = EnumerateCsvLine(line).ToArray();
 			bool setAny = false;
 			foreach(string field in fieldDefs.Keys) {
@@ -277,21 +286,31 @@ namespace DevBoost.Utilities {
 		private static bool SetField(string fieldName, string val, FieldInfo[] fi, object destObject) {
 			foreach(FieldInfo f in fi) {
 				// Case insensitive comparison
-				if (string.Compare(fieldName, f.Name, true) == 0) {
+				if (string.Compare(fieldName, f.Name + (f.FieldType.IsArray ? "[]":""), true) == 0) {
 					// Might need to parse the string into the field type
 					object typedVal = f.FieldType == typeof(string) ? val : ParseString(val, f.FieldType);
-					f.SetValue(destObject, typedVal);
-					return true;
-				}
+                    try
+                    {
+                        f.SetValue(destObject, typedVal);
+                    }
+                    catch (Exception exp)
+                    {
+                        Debug.LogException(exp);
+                        f.SetValue(destObject, typedVal);
+                    }
+                    return true;
+                }
 			}
 			return false;
 		}
 
 		private static object ParseString(string strValue, Type T) {
-			if(strValue == null || strValue.Length < 1)
-				return Activator.CreateInstance(T);
-			var cv = TypeDescriptor.GetConverter(T);
-			return cv.ConvertFromInvariantString(strValue);
+            if (T.IsArray)
+                return TypeDescriptor.GetConverter(T).ConvertFrom(strValue);
+            if (strValue == null || strValue.Length < 1)
+                return Activator.CreateInstance(T);
+
+            return TypeDescriptor.GetConverter(T).ConvertFromInvariantString(strValue);
 		}
 
 		public static T GetTfromString<T>(string strValue)

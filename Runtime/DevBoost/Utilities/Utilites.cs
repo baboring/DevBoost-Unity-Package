@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DevBoost.Utilities {
 
-	static public class Facade
+	static public class Util
 	{
 		// setting layer number.
 		static public void SetLayerRecursively(GameObject _object, System.Int32 _layer)
@@ -21,12 +21,6 @@ namespace DevBoost.Utilities {
 			};
 
 			return;
-		}
-
-		// Random
-		static public System.Int32 GetRandomInt( System.Int32 _max_value )
-		{
-			return UnityEngine.Random.Range(0, _max_value);
 		}
 
 		// file path
@@ -78,16 +72,12 @@ namespace DevBoost.Utilities {
 			return true;
 		}
 
-		static public int RandomRange(int min_include, int max_include)	// max가 int는 exclusive 이고 float 는 include다 ( 설명 미스매치다~~~)
-		{
-			return UnityEngine.Random.Range(min_include, max_include + 1);
-		}
-		static public float RandomRange(float min_include, float max_include)	// max가 int는 exclusive 이고 float 는 include다 ( 설명 미스매치다~~~)
-		{
-			return UnityEngine.Random.Range(min_include, max_include);
-		}
-
-		// topParentObj 의 하위 컨포넌트에서 해당 이름의 GO를 찾는다.
+		/// <summary>
+		/// find the specific gameobjec with givin name
+		/// </summary>
+		/// <param name="topParentObj"></param>
+		/// <param name="objName"></param>
+		/// <returns></returns>
 		static public GameObject FindGameObjectInChildren(GameObject topParentObj, string objName)
 		{
 			Transform[] childTr = topParentObj.GetComponentsInChildren<Transform>();

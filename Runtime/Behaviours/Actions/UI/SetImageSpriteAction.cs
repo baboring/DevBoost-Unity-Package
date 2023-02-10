@@ -14,10 +14,10 @@ namespace DevBoost.ActionBehaviour {
 	public class SetImageSpriteAction : ActionNode {
 
 		[SerializeField]
-		public Sprite sprite;
+		public Image image;
 
 		[SerializeField]
-		public Image image;
+		public Sprite sprite;
 
         protected override ActionState OnUpdate() {
 

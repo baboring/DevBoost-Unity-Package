@@ -5,6 +5,7 @@
 *  Purpose:  []
 ****************************************************/
 using System;
+using System.Globalization;
 using UnityEngine;
 
 namespace DevBoost.ActionBehaviour
@@ -31,7 +32,7 @@ namespace DevBoost.ActionBehaviour
         public float asFloat
         {
             get { return Convert.ToFloat32(asString, 0); }
-            set { asString = value.ToString(); }
+            set { asString = value.ToString(CultureInfo.InvariantCulture); }
         }
 
         public bool asBool
@@ -79,7 +80,7 @@ namespace DevBoost.ActionBehaviour
 
             str = str.Trim();
             short value = _default;
-            if (double.TryParse(str, out double testValue))
+            if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture,out double testValue))
                 value = (short)Math.Truncate(testValue);
             else if (!short.TryParse(str, out value))
                 Debug.LogError("Wrong format of value for short : " + str);
@@ -97,7 +98,7 @@ namespace DevBoost.ActionBehaviour
                 return _default;
             str = str.Trim();
             int value = _default;
-            if (double.TryParse(str, out double testValue))
+            if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out double testValue))
                 value = (int)Math.Truncate(testValue);
             else if (!int.TryParse(str, out value))
                 Debug.LogError("Wrong format of value for int : " + str);
@@ -134,7 +135,7 @@ namespace DevBoost.ActionBehaviour
                 return _default;
             str = str.Trim();
             long value = _default;
-            if (double.TryParse(str, out double testValue))
+            if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out double testValue))
                 value = (long)Math.Truncate(testValue);
             else if (!long.TryParse(str, out value))
                 Debug.LogError("Wrong format of value for long : " + str);
@@ -152,7 +153,7 @@ namespace DevBoost.ActionBehaviour
                 return _default;
 
             str = str.Trim();
-            if (float.TryParse(str, out float value))
+            if (float.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out float value))
                 return value;
             else
                 Debug.LogError("Wrong format of value for float : " + str);
@@ -170,7 +171,7 @@ namespace DevBoost.ActionBehaviour
             if (string.IsNullOrEmpty(str))
                 return _default;
             str = str.Trim();
-            if (double.TryParse(str, out double value))
+            if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out double value))
                 return value;
             else
                 Debug.LogError("Wrong format of value for double : " + str);
@@ -187,7 +188,7 @@ namespace DevBoost.ActionBehaviour
             if (string.IsNullOrEmpty(str))
                 return _default;
             str = str.Trim();
-            if (decimal.TryParse(str, out decimal value))
+            if (decimal.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal value))
                 return value;
             else
                 Debug.LogError("Wrong format of value for decimal : " + str);

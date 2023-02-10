@@ -48,7 +48,7 @@ namespace DevBoost.ActionBehaviour
                 {
                     _prev_state = _curr_state;
                     _curr_state = value;
-                    Debug.Assert(value != ActionState.Fail && value != ActionState.Error, "Action:" + value);
+                    Debug.Assert(value != ActionState.Fail && value != ActionState.Error,"Action:" + value);
                     // notify state changed
                     onChangedState?.Invoke(_curr_state, _prev_state);
                 }

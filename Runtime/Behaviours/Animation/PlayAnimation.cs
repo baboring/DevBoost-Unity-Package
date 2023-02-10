@@ -14,18 +14,52 @@ namespace DevBoost.ActionBehaviour
     /// <summary>
     /// Play Animation Clip
     /// </summary> 
-    [RequireComponent(typeof(AnimationController))]
     public class PlayAnimation : ActionNode
     {
+        /// <summary>
+        /// Animator instance
+        /// </summary>   
+        [SerializeField] private Animation ani = null;
         [SerializeField] string animationName;
         [Range(0.0f,1.0f)]
         [SerializeField] float startTime;
 
+        /// <summary>
+        /// play Animation
+        /// </summary>
+        /// <param name="aniName"></param>
+        public void Play(string aniName)
+        {
+            ani.Play();
+        }
+
+
+        /// <summary>
+        /// play Animation
+        /// </summary>
+        /// <param name="aniName"></param>
+        /// <param name="time"></param>
+        public void Play(string aniName, float time)
+        {
+            ani[aniName].normalizedTime = time;
+            ani.Play();
+        }
+
+        /// <summary>
+        /// Play Animation
+        /// </summary>
+        /// <param name="aniName"></param>
+        /// <param name="time"></param>
+        /// <param name="speed"></param>
+        public void Play(string aniName, float time, float speed)
+        {
+            ani[aniName].normalizedTime = time;
+            ani[aniName].speed = speed;
+            ani.Play();
+        }
         protected override ActionState OnUpdate()
         {
-            var ani = GetComponent<AnimationController>();
-
-            ani.Play(animationName, startTime);
+            this.Play(animationName, startTime);
 
             return ActionState.Success;
 

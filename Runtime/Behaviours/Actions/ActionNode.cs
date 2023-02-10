@@ -28,7 +28,7 @@ namespace DevBoost.ActionBehaviour {
 			return ActionState.Success;
 		}
 
-        [System.Diagnostics.Conditional("FILE_LOG")]
+        [System.Diagnostics.Conditional("SHOW_LOG_ACTION")]
 		protected static void Log(LogType logType, string text)
 		{
 			if (logType == LogType.Error)

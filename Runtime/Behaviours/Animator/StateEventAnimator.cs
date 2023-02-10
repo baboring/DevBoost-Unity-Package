@@ -4,6 +4,7 @@
 *  Author:   Benjamin
 *  Purpose:  []
 ****************************************************/
+using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,18 @@ namespace DevBoost.ActionBehaviour
         [SerializeField]
         private HashType hashType;
 
+        /// <summary>
+        /// List of enter animation events registered
+        /// </summary>
+        [SerializeField, ReorderableList]
+        public List<AnimationEvent> EnterAnimationEvents = null;
+
+        /// <summary>
+        /// List of exit animation events registered
+        /// </summary>
+        [SerializeField, ReorderableList]
+        public List<AnimationEvent> ExitAnimationEvents = null;
+
         private sealed class StateCallbacks
         {
             public int hash;
@@ -35,7 +48,7 @@ namespace DevBoost.ActionBehaviour
         private StateCallbacks currentState = null;
         private Dictionary<int, StateCallbacks> registeredStates = new Dictionary<int, StateCallbacks>();
 
-        public void Start()
+        private void Awake()
         {
             if (animator == null)
                 animator = GetComponent<Animator>();
@@ -55,6 +68,12 @@ namespace DevBoost.ActionBehaviour
                     stateBehaviour.OnExitState += OnExitState;
                 }
             }
+
+            // hash
+            foreach( var aniEvent in EnterAnimationEvents)
+                aniEvent.hash = Animator.StringToHash(aniEvent.animationEventId);
+            foreach (var aniEvent in ExitAnimationEvents)
+                aniEvent.hash = Animator.StringToHash(aniEvent.animationEventId);
         }
 
         public void RegisterStateCallback(string eventName, Action onEnter, Action onExit = null)
@@ -87,6 +106,13 @@ namespace DevBoost.ActionBehaviour
 
                 EnterState(hash);
             }
+
+            if (EnterAnimationEvents.Count > 0)
+            {
+                foreach(var info in EnterAnimationEvents)
+                    if (info.hash == hash)
+                        info.RunEvent();
+            }
         }
 
         private void OnExitState(StateMachineInfo stateInfo)
@@ -100,6 +126,14 @@ namespace DevBoost.ActionBehaviour
                 currentState = null;
                 callbackExit?.Invoke();
             }
+
+            if (ExitAnimationEvents.Count > 0)
+            {
+                foreach (var info in ExitAnimationEvents)
+                    if (info.hash == hash)
+                        info.RunEvent();
+            }
+
         }
 
         private void EnterState(int stateNameHash)

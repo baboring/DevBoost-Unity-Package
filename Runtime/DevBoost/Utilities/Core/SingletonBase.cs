@@ -10,22 +10,17 @@ using System;
 
 namespace DevBoost.Utilities 
 { 
+	public interface ISingleton
+    {
+		void OnInstantiated();
+	}
 
-	public abstract class SingletonBase<T> where T : class, new()
+	public abstract class SingletonBase<T> where T : class, ISingleton, new()
 	{
-		static protected bool m_ShuttingDown = false;
-
 		static protected T _instance;
 		static public T Instance
 		{
-			get {
-				if (m_ShuttingDown)
-				{
-					Debug.LogWarning("[Singleton] Instance '" + typeof(T) + "' already destroyed. Returning null.");
-					return null;
-				}
-				return _instance; 
-			}
+			get { return _instance; }
 			set
 			{
 				if (_instance != null)
@@ -45,6 +40,7 @@ namespace DevBoost.Utilities
 		static protected T Instantiate()
 		{
 			Instance = new T();
+			Instance.OnInstantiated();
 			return Instance;
 		}
 
@@ -52,15 +48,6 @@ namespace DevBoost.Utilities
 		{
 			_instance = null;
 		}
-
-		/// <summary>
-		/// set the setting shutting down
-		/// </summary>
-		private void OnApplicationQuit()
-		{
-			m_ShuttingDown = true;
-		}
-
 	}
 
 }

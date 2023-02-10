@@ -105,15 +105,6 @@ namespace DevBoost.ActionBehaviour
             RegisterEvent(m_AnimationEvents);
         }
 
-
-
-        private void OnEnable()
-        {
-
-
-        }
-
-
         private void RegisterEvent(AnimationEvent[] events)
         {
             if (events != null)
@@ -280,7 +271,7 @@ namespace DevBoost.ActionBehaviour
             var animator = m_Animator;
             if (null == animator)
                 return;
-            //animator.ResetAllParameters();
+            animator.ResetAllParameters();
         }
 
     }
@@ -303,6 +294,8 @@ namespace DevBoost.ActionBehaviour
         // event node
         public ActionNode ReceiveEventNode { get { return m_AnimationEventNode; } }
         private System.Action m_OnEvent = null;
+
+        public int hash { get; set; }
 
         public AnimationEvent(string id, System.Action action = null)
         {

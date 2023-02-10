@@ -37,18 +37,22 @@ namespace DevBoost.Utilities
 		public void FlagFreeItem(T item)
 		{
 			freeItems.Enqueue(item);
+			items.Remove(item);
 		}
 
 		public T GetFreeItem()
 		{
 			if (freeItems.Count == 0) {
-				T item = createItemAction();
-				items.Add(item);
-
-				return item;
+				T newItem = createItemAction();
+				items.Add(newItem);
+				return newItem;
 			}
-
-			return freeItems.Dequeue();
+			else
+            {
+				T newItem = freeItems.Dequeue();
+				items.Add(newItem);
+				return newItem;
+			}
 		}
 
 		public List<T> Items
@@ -56,7 +60,8 @@ namespace DevBoost.Utilities
 			get { return items; }
 		}
 
-		public void Clear() {
+		public void Clear() 
+		{
 			items.Clear();
 			freeItems.Clear();
 		}
