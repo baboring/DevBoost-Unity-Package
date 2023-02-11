@@ -4,9 +4,6 @@
 *  Author:   Benjamin
 *  Purpose:  []
 ****************************************************/
-#if FILE_LOG
-#define SHOW_LOG_ACTION
-#endif
 
 using System.Diagnostics;
 using UnityEngine;
@@ -39,7 +36,7 @@ namespace DevBoost.ActionBehaviour
             return ActionState.Success;
         }
 
-        [Conditional("SHOW_LOG_ACTION")]
+        [Conditional("DEVELOPMENT_BUILD")]
         private void LogWrite()
         {
             if (isColor)
