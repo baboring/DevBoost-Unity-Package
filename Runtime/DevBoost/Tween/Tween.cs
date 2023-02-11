@@ -1,6 +1,6 @@
 using System;
 
-namespace DevBoost.Utilities
+namespace DevBoost.Effects
 {
     public static class Tween
     {
