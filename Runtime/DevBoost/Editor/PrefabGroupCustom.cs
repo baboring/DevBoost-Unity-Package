@@ -3,6 +3,7 @@
  * Author : Benjamin Park
  * Description : Reorderble List for Prefab group
 --------------------------------------------------------------------- */
+#if UNITY_EDITOR
 
 using UnityEditor;
 using UnityEditorInternal;
@@ -127,3 +128,4 @@ namespace DevBoost.Utilities
 
     }
 }
+#endif

@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
 using UnityEditor.UI;
 
 namespace DevBoost.Mecani {
@@ -64,3 +65,4 @@ namespace DevBoost.Mecani {
 		#endregion
 	}
 }
+#endif

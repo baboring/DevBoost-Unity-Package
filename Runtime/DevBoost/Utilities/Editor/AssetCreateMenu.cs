@@ -1,4 +1,5 @@
-using UnityEngine;
+#if UNITY_EDITOR
+
 using UnityEditor;
 
 namespace DevBoost
@@ -13,3 +14,5 @@ namespace DevBoost
         }
     }
 }
+
+#endif
