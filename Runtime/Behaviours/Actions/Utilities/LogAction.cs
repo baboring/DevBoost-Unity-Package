@@ -36,7 +36,7 @@ namespace DevBoost.ActionBehaviour
             return ActionState.Success;
         }
 
-        [Conditional("DEVELOPMENT_BUILD")]
+        //[Conditional("DEVELOPMENT_BUILD")]
         private void LogWrite()
         {
             if (isColor)
