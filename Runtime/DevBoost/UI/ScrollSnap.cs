@@ -6,7 +6,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine.Events;
 
-namespace UI {
+namespace DevBoost.UI {
 
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(ScrollRect))]
