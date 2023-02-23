@@ -11,7 +11,7 @@ using System.Diagnostics;
 namespace DevBoost.Utilities 
 {
     [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
-    public abstract class Singleton<T> : SingletonBase<T> where T : class, ISingleton, new()
+    public abstract class Singleton<T> : SingletonBase<T> where T : class, ISingleton<T>, new()
     {
         static new public T Instance
         {
@@ -50,7 +50,7 @@ namespace DevBoost.Utilities
         DontDestroyOnLoad
     }
 
-    public class SingletonMono<T> : MonoBehaviour where T : SingletonMono<T>
+    public class SingletonMono<T> : MonoBehaviour where T : SingletonMono<T>, ISingleton<T>
     {
         [SerializeField] private SingletonType m_SingletonType = SingletonType.DestroyOnLoad;
 
