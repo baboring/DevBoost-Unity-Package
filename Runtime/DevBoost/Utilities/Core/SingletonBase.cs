@@ -10,14 +10,12 @@ using System;
 
 namespace DevBoost.Utilities 
 { 
-	public interface ISingleton<T>
+	public interface ISingleton
     {
-		bool IsInstanced { get; }
-		T Instance { get; }
 		void OnInstantiated();
 	}
 
-	public abstract class SingletonBase<T> where T : class, ISingleton<T>, new()
+	public abstract class SingletonBase<T> where T : class, ISingleton, new()
 	{
 		static protected T _instance;
 		static public T Instance
@@ -49,6 +47,10 @@ namespace DevBoost.Utilities
 		static public void Destroy()
 		{
 			_instance = null;
+		}
+		public virtual void OnInstantiated()
+		{
+
 		}
 	}
 

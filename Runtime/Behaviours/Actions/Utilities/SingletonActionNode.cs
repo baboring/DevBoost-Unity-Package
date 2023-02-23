@@ -13,7 +13,7 @@ namespace DevBoost.ActionBehaviour
     /// <summary>
     /// Action starter.
     /// </summary>
-    public class SingletonActionNode<T> : ActionNode where T : SingletonActionNode<T>, ISingleton<T>
+    public class SingletonActionNode<T> : ActionNode where T : SingletonActionNode<T>, ISingleton
     {
 
         [SerializeField] private SingletonType m_SingletonType = SingletonType.DestroyOnLoad;

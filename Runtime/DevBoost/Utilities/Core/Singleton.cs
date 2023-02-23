@@ -11,7 +11,7 @@ using System.Diagnostics;
 namespace DevBoost.Utilities 
 {
     [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
-    public abstract class Singleton<T> : SingletonBase<T> where T : class, ISingleton<T>, new()
+    public abstract class Singleton<T> : SingletonBase<T> where T : class, ISingleton, new()
     {
         static new public T Instance
         {
@@ -37,10 +37,7 @@ namespace DevBoost.Utilities
             return ToString();
         }
 
-        public virtual void OnInstantiated()
-        {
 
-        }
     }
 
 
@@ -50,7 +47,7 @@ namespace DevBoost.Utilities
         DontDestroyOnLoad
     }
 
-    public class SingletonMono<T> : MonoBehaviour where T : SingletonMono<T>, ISingleton<T>
+    public class SingletonMono<T> : MonoBehaviour where T : SingletonMono<T>
     {
         [SerializeField] private SingletonType m_SingletonType = SingletonType.DestroyOnLoad;
 
@@ -108,6 +105,7 @@ namespace DevBoost.Utilities
                 Instance = obj.AddComponent<T>();
                 if (null == Instance)
                     UnityEngine.Debug.LogError("FATAL! Cannot create an instance of " + typeof(T) + ".");
+                Instance?.OnInstantiated();
             }
             else
             {
@@ -130,6 +128,10 @@ namespace DevBoost.Utilities
                 m_SingletonType = type;
                 DontDestroyOnLoad(this.gameObject);
             }
+        }
+        public virtual void OnInstantiated()
+        {
+
         }
         // Destroy
         public static void SelfDestroy()
