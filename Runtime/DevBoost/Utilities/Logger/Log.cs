@@ -8,10 +8,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
-#if SAVE_ENABLED
 using System.IO;
 using System.Text;
-#endif
 
 namespace DevBoost.Utilities {
 
@@ -29,9 +27,7 @@ namespace DevBoost.Utilities {
         //-------------------------------------------------------------------------------------------------------------------------
 
         public bool IsCaptureLog { get { return this.isCaptureLog; } }
-#if SAVE_ENABLED
         private StreamWriter OutputStream;
-#endif
 
         protected new void Awake()
         {
@@ -50,9 +46,9 @@ namespace DevBoost.Utilities {
 
         }
 
+        [Conditional("SAVE_ENABLED")]
         void CreatelogFile()
         {
-#if SAVE_ENABLED
             int index = 0;
             DateTime now = DateTime.Now;
             string filename = logFile;
@@ -79,10 +75,9 @@ namespace DevBoost.Utilities {
             // Open the log file to append the new log to it.
             OutputStream = new StreamWriter(filename, true);
             Log.Trace("<<< Logger Start >>>\n\n");
-#endif
         }
 
-#if SAVE_ENABLED
+        [Conditional("SAVE_ENABLED")]
         protected new void OnDestroy()
         {
             if (OutputStream != null)
@@ -92,12 +87,11 @@ namespace DevBoost.Utilities {
             }
             base.OnDestroy();
         }
-#endif
 
+        [Conditional("SAVE_ENABLED")]
         private void Write(string message, bool istimeStamp = true)
         {
 
-#if SAVE_ENABLED
             // window debug message
             System.Diagnostics.Debug.WriteLine(message);
 
@@ -112,9 +106,6 @@ namespace DevBoost.Utilities {
                 OutputStream.WriteLine(message);
                 OutputStream.Flush();
             }
-
-
-#endif
         }
 
 
@@ -294,12 +285,10 @@ namespace DevBoost.Utilities {
 
             GUILayout.Space(5);
 
-#if SAVE_ENABLED
             if (GUILayout.Button("Save", GUILayout.Width(50)))
                 Save();
 
             GUILayout.Space(5);
-#endif
 
             if (entries.Count == 0)
                 GUI.enabled = true;
@@ -434,9 +423,9 @@ namespace DevBoost.Utilities {
             SetVisible(false);
         }
 
+        [Conditional("SAVE_ENABLED")]
         public void Save()
         {
-#if SAVE_ENABLED
             int index = 0;
             DateTime now = DateTime.Now;
             string filename = String.Empty;
@@ -467,9 +456,7 @@ namespace DevBoost.Utilities {
             UnityEngine.Debug.Log("Saving console log to " + filename);
 
             File.WriteAllText(filename, sb.ToString());
-#else
-            throw new NotSupportedException("Save is not supported on " + Application.platform);
-#endif
+            //throw new NotSupportedException("Save is not supported on " + Application.platform);
         }
 
         void CaptureLog(string log, string stacktrace, LogType type)

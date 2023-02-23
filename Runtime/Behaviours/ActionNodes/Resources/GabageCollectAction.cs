@@ -8,11 +8,8 @@ namespace DevBoost.ActionBehaviour
 {
     public class GabageCollectAction : ActionNode
     {
-        private bool isDone;
-
         protected override void OnReset()
         {
-            isDone = false;
             base.OnReset();
         }
         protected override ActionState OnUpdate()

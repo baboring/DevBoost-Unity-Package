@@ -98,7 +98,7 @@ namespace DevBoost.ActionBehaviour
                     Instance.OnDestroyListener = null;
                 }
 
-                DestroyObject(Instance.gameObject);
+                Object.Destroy(Instance.gameObject);
                 Instance = null;
             }
 

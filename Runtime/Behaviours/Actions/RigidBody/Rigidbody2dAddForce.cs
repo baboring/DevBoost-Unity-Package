@@ -20,7 +20,8 @@ namespace DevBoost.ActionBehaviour {
 		[SerializeField]
 		protected Vector2 force;
 
-		Rigidbody2D rigidbody;
+		[SerializeField]
+		protected Rigidbody2D _rigidbody;
 
         protected override ActionState OnUpdate() {
 
@@ -28,9 +29,9 @@ namespace DevBoost.ActionBehaviour {
 			ActionState result = base.OnUpdate();
 			if(result != ActionState.Success)
 				return result;
-			if(null == rigidbody)
-				rigidbody = GetComponent<Rigidbody2D>();
-			rigidbody.AddForce(force);
+			if(null == _rigidbody)
+				_rigidbody = GetComponent<Rigidbody2D>();
+			_rigidbody.AddForce(force);
 			return ActionState.Success;
 		}
 	}
