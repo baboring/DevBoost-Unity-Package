@@ -24,6 +24,11 @@ namespace DevBoost
 
             return false;
         }
+
+        public static bool IsNull(this GameObject obj)
+        {
+            return ReferenceEquals(null, obj);
+        }
     }
 
     public static class TransformExtention

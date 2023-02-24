@@ -56,12 +56,14 @@ namespace DevBoost.Utilities
             get;
             protected set;
         }
+
         //callback called when it destroyed
         public System.Action OnDestroyListener;
         public System.Action OnInstantiateListener;
 
         static object _lock = new object();
 
+        static public bool IsInstanced => !Instance.IsNull();
         // Returns the instance of the singleton
         public static T SafeInstance
         {

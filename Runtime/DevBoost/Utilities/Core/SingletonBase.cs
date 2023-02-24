@@ -35,7 +35,7 @@ namespace DevBoost.Utilities
 				throw new System.ApplicationException("cannot set Instance twice!");
 		}
 
-		static public bool IsInstanced { get { return  null != _instance; } }
+		static public bool IsInstanced => null != _instance;
 
 		static protected T Instantiate()
 		{
