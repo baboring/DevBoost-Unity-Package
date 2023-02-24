@@ -13,8 +13,7 @@ using NaughtyAttributes;
 
 namespace DevBoost.Utilities
 {
-
-    public class SingletonMonoFSM<T> : SingletonMono<T> where T : SingletonMonoFSM<T>
+    public class SingletonMonoFSM<T,S> : SingletonMono<S> where S : SingletonMonoFSM<T, S>
     {
         [ShowNativeProperty]
         public T Current { get; private set; }
