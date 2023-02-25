@@ -1,23 +1,21 @@
 ﻿/* *************************************************
 *  Created:  2018-1-28 20:15:39
-*  File:     DisableBehaviour.cs
+*  File:     EnableBehaviourAction.cs
 *  Author:   Benjamin
 *  Purpose:  []
 ****************************************************/
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace DevBoost.ActionBehaviour {
-	
+
     using NaughtyAttributes;
 
-	public class DisableBehaviour : ActionNode {
+	public class EnableBehaviourAction : ActionNode {
 
         [ReorderableList]
 		[SerializeField]
-		protected Behaviour[] targets;
+		protected ActionNode[] targets;
 
         protected override ActionState OnUpdate() {
 
@@ -27,8 +25,7 @@ namespace DevBoost.ActionBehaviour {
 				return result;
 
 			for( int i=0;i < targets.Length; ++i )
-				if (targets[i] != null)
-                    targets[i].enabled = false;
+				targets[i].enabled = true;
 
 			return ActionState.Success;
 		}
