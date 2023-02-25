@@ -88,7 +88,10 @@ namespace DevBoost.Utilities
             {
                 Instance = this as T;
                 if (m_SingletonType == SingletonType.DontDestroyOnLoad)
-                    DontDestroyOnLoad(this.gameObject);
+                {
+                    if (!gameObject.IsDontDestroyOnLoad())
+                        DontDestroyOnLoad(this.gameObject);
+                }
                 OnInstantiateListener?.Invoke();
             }
             else
@@ -128,7 +131,8 @@ namespace DevBoost.Utilities
             if (type == SingletonType.DontDestroyOnLoad)
             {
                 m_SingletonType = type;
-                DontDestroyOnLoad(this.gameObject);
+                if (!gameObject.IsDontDestroyOnLoad())
+                    DontDestroyOnLoad(this.gameObject);
             }
         }
         public virtual void OnInstantiated()
