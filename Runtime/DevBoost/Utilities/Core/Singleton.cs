@@ -5,7 +5,6 @@
 	purpose:	[managed singleton for MonoBehaviour and classes]
 *********************************************************************/
 using UnityEngine;
-using System;
 using System.Diagnostics;
 
 namespace DevBoost.Utilities 

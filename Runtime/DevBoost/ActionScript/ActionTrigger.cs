@@ -1,10 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿/* *************************************************
+*  Created:  2023-2-25 14:51:00
+*  File:     ActionTrigger.cs
+*  Author:   Benjamin
+*  Purpose:  []
+****************************************************/
+
 using UnityEngine;
+using System;
 
 
 namespace DevBoost.ActionScript {
-	using System;
 
 	public abstract class ActionTrigger : MonoBehaviour {
 
@@ -17,17 +22,20 @@ namespace DevBoost.ActionScript {
 
 		public string Name;
 		// Use this for initialization
-		public void Initialize () {
+		public void Initialize() {
 			if(null != actObj)
 				actObj.Initialize(this.gameObject);
 		}
 		
 		// Update is called once per frame
-		public void Tick () {
-			if( null == match || null == action)
+		public void Tick() {
+			if( null == match)
 				return;
 			if(match(actObj.Value))
-				action(actObj);
+            {
+				actObj.TriggerEvent();
+				action?.Invoke(actObj);
+			}
 		}
 	}
 
