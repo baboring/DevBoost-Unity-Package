@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace DevBoost
 {
+    public static class ComponentExtention
+    {
+        public static ActionBehaviour.ActionNode AddOnDestroy(this MonoBehaviour obj) => ActionBehaviour.ActionNode.AddTo<ActionBehaviour.ExecuteOnDestroy>(obj);
+    }
 
     public static class GameObjectExtention
     {
