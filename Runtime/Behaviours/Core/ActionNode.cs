@@ -36,6 +36,15 @@ namespace DevBoost.ActionBehaviour {
 			else if (m_LogMode == LogMode.All)
                 Debug.Log("[ActionNode] " + text);
 		}
-		
-	}
+
+        /// <summary>
+        /// Get or add an event on Destroy event
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static ActionNode AddTo<T>(Component obj) where T : ActionNode
+        {
+            return obj.GetOrAddComponent<T>();
+        }
+    }
 }

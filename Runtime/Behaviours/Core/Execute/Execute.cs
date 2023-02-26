@@ -52,15 +52,5 @@ namespace DevBoost.ActionBehaviour
         {
             ExecuteInvoke();
         }
-
-        /// <summary>
-        /// Get or add an event on Destroy event
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static Execute AddTo<T>(Component obj) where T : Execute
-        {
-            return obj.GetOrAddComponent<T>();
-        }
     }
 }
