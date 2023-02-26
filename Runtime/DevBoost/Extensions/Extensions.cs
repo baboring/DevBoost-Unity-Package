@@ -12,7 +12,13 @@ namespace DevBoost
 {
     public static class ComponentExtention
     {
-        public static ActionBehaviour.ActionNode AddOnDestroy(this MonoBehaviour obj) => ActionBehaviour.ActionNode.AddTo<ActionBehaviour.ExecuteOnDestroy>(obj);
+        public static ActionBehaviour.ActionNode AddToOnDestroy(this MonoBehaviour obj, System.Action callback)
+        {
+            var act = ActionBehaviour.ActionNode.AddTo<ActionBehaviour.ExecuteOnDestroy>(obj);
+            act.AddListener(callback);
+            return act;
+        }
+
     }
 
     public static class GameObjectExtention
