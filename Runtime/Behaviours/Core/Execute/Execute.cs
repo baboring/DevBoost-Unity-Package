@@ -23,7 +23,7 @@ namespace DevBoost.ActionBehaviour
         {
             base.OnReset();
             state = ActionState.None;
-            Debug.Assert(Node != null, "Node is null : " + name);
+            //Debug.Assert(Node != null, "Node is null : " + name);
         }
 
         protected override ActionState OnUpdate()
