@@ -318,6 +318,38 @@ namespace DevBoost.Utilities {
 			var cv = TypeDescriptor.GetConverter(typeof(T));
 			return (T)(cv.ConvertFromInvariantString(strValue));
 		}
+
+		public static string[] Split(string line, char spliter = ',')
+		{
+			bool isInsideQuotes = false;
+			List<string> result = new List<string>();
+
+			string temp = string.Empty;
+			for (int i = 0; i < line.Length; i++)
+				if (line[i] == '"')
+				{
+					isInsideQuotes = !isInsideQuotes;
+
+					if (i == line.Length - 1)
+						result.Add(temp);
+				}
+				else
+				{
+					if (!isInsideQuotes && line[i] == spliter)
+					{
+						result.Add(temp);
+						temp = string.Empty;
+					}
+					else
+						temp += line[i];
+				}
+			// the rest of strings
+			if (!string.IsNullOrEmpty(temp))
+				result.Add(temp);
+
+			return result.ToArray();
+		}
+
 		private static IEnumerable<string> EnumerateCsvLine(string line) {
 			// Regex taken from http://wiki.unity3d.com/index.php?title=CSVReader
 			foreach(Match m in Regex.Matches(line,
