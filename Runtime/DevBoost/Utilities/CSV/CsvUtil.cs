@@ -329,9 +329,6 @@ namespace DevBoost.Utilities {
 				if (line[i] == '"')
 				{
 					isInsideQuotes = !isInsideQuotes;
-
-					if (i == line.Length - 1)
-						result.Add(temp);
 				}
 				else
 				{
