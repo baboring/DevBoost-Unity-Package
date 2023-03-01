@@ -3,6 +3,7 @@
  * Author : Benjamin Park
  * Description : GUI Window
 --------------------------------------------------------------------- */
+#if UNITY_EDITOR
 
 using UnityEngine;
 using UnityEditor;
@@ -257,3 +258,4 @@ namespace DevBoost
 
 
 }
+#endif
