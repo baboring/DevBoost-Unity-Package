@@ -5,7 +5,7 @@
 ****************************************************/
 using System.ComponentModel;
 using System;
-using System.Linq;
+using System.Globalization;
 
 namespace DevBoost.Utilities
 {
@@ -48,7 +48,7 @@ namespace DevBoost.Utilities
             {
                 string s = value as string;
                 if (!string.IsNullOrEmpty(s))
-                    return s.Split(new char[] { '\n', '|' });
+                    return s.Split(new char[] { '\n', '|', ',' });
 
                 return new string[0];
             }
@@ -73,7 +73,7 @@ namespace DevBoost.Utilities
                 string s = value as string;
                 if (!string.IsNullOrEmpty(s))
                 {
-                    var items = s.Split(new char[] { '\n', '|' });
+                    var items = s.Split(new char[] { '\n', '|',  ',' });
                     var result = new int[items.Length];
                     for (int i = 0; i < items.Length; ++i)
                         Int32.TryParse(items[i],out result[i]);
@@ -84,7 +84,7 @@ namespace DevBoost.Utilities
             }
         }
     }
-
+    
     // -----------------------------------------------------------
     public class FloatArrayDescriptor : CustomTypeDescriptor
     {
@@ -103,10 +103,10 @@ namespace DevBoost.Utilities
                 string s = value as string;
                 if (!string.IsNullOrEmpty(s))
                 {
-                    var items = s.Split(new char[] { '\n', '|' });
+                    var items = s.Split(new char[] { '\n', '|', ',' });
                     var result = new float[items.Length];
                     for (int i = 0; i < items.Length; ++i)
-                        Single.TryParse(items[i], out result[i]);
+                        Single.TryParse(items[i], NumberStyles.Any, CultureInfo.InvariantCulture, out result[i]);
                     return result;
                 }
                 return new float[0];
@@ -114,27 +114,5 @@ namespace DevBoost.Utilities
         }
     }
 
-    // -----------------------------------------------------------
-
-    public class EnumTypeArrayDescriptor<T> : CustomTypeDescriptor
-    {
-        public override TypeConverter GetConverter() { return new CustomArrayConverter(); }
-        public class CustomArrayConverter : ArrayConverter
-        {
-            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-            {
-                if (sourceType == typeof(T))
-                    return true;
-                return base.CanConvertFrom(context, sourceType);
-            }
-
-            public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
-            {
-                string s = value as string;
-                if (!string.IsNullOrEmpty(s))
-                    return s.Split(new char[] { ' ', '\n', '|' }).Select(va => (T)Enum.Parse(typeof(T), va)).ToArray();
-                return base.ConvertFrom(context, culture, value);
-            }
-        }
-    }
+    
 }

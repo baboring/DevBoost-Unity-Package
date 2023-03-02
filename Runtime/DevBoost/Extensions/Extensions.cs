@@ -378,16 +378,8 @@ namespace DevBoost
                 : result;
         }
 
-        public static readonly string[] TrueOptions
-            = new string[]
-            {
-                "true", "yes"
-            };
-        public static readonly string[] FalseOptions
-            = new string[]
-            {
-                "false", "no"
-            };
+        public static readonly string[] TrueOptions = new string[] { "true", "yes" };
+        public static readonly string[] FalseOptions = new string[] { "false", "no" };
         public static bool ParseBool(this string s, out bool error)
         {
             s = s.ToLower();

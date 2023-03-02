@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System;
 using System.Reflection;
 using System.ComponentModel;
+using System.Collections;
 
 namespace DevBoost.Utilities {
 
@@ -304,16 +305,37 @@ namespace DevBoost.Utilities {
 			return false;
 		}
 
-		private static object ParseString(string strValue, Type T) {
+		public static object ParseString(string strValue, Type T) {
             if (T.IsArray)
-                return TypeDescriptor.GetConverter(T).ConvertFrom(strValue);
-            if (strValue == null || strValue.Length < 1)
+            {
+				//return TypeDescriptor.GetConverter(T).ConvertFrom(strValue);
+				if (!string.IsNullOrEmpty(strValue))
+				{
+					var items = strValue.Split(new char[] { '\n', '|', ',' });
+					var result = (IList)Activator.CreateInstance(T, items.Length);
+					for (int i = 0; i < items.Length; ++i)
+					{
+						try
+						{
+							result[i] = TypeDescriptor.GetConverter(T.GetElementType())?.ConvertFromInvariantString(items[i]);
+						}
+						catch (Exception exp)
+						{
+							Debug.LogException(exp);
+						}
+					}
+					return result;
+				}
+
+				return (IList)Activator.CreateInstance(T, 0);
+			}
+			if (strValue == null || strValue.Length < 1)
                 return Activator.CreateInstance(T);
 
-            return TypeDescriptor.GetConverter(T).ConvertFromInvariantString(strValue);
+            return TypeDescriptor.GetConverter(T)?.ConvertFromInvariantString(strValue);
 		}
 
-		public static T GetTfromString<T>(string strValue)
+		public static T ConvertFrom<T>(string strValue)
 		{
 			var cv = TypeDescriptor.GetConverter(typeof(T));
 			return (T)(cv.ConvertFromInvariantString(strValue));
