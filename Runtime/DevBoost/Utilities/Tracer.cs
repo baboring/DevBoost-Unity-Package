@@ -9,6 +9,7 @@ namespace DevBoost.Utilities
 {
     using System;
     using System.Diagnostics;
+    using UnityEngine;
     using UnityEngine.Networking;
 
     /// <summary>
@@ -18,10 +19,12 @@ namespace DevBoost.Utilities
     {
         private bool disposedValue;
         protected Stopwatch timeStamp;
+        protected float timeSaved;
 
         public Tracer()
         {
             timeStamp = Stopwatch.StartNew();
+            timeSaved = Time.realtimeSinceStartup;
         }
 
 
@@ -83,5 +86,29 @@ namespace DevBoost.Utilities
         }
 
     }
+
+    public class TracerTimeLog : Tracer
+    {
+        private string tagString;
+        private bool isRealtime = true;
+
+        public TracerTimeLog(string tag) : base()
+        {
+            tagString = tag;
+            Log.Trace($"[ Trace ] Time : #{tagString} >>>>>>> begin");
+        }
+        // Start is called before the first frame update
+        protected override void Dispose(bool disposing)
+        {
+            if (isRealtime)
+                Log.Trace($"[ Trace ] Time : #{tagString} <<<<<<< Time : {Time.realtimeSinceStartup - timeSaved,0:F5} sec");
+            else
+                Log.Trace($"[ Trace ] Time : #{tagString} <<<<<<< Time : {timeStamp.ElapsedMilliseconds} ms");
+
+            base.Dispose(disposing);
+
+        }
+    }
+
 
 }
