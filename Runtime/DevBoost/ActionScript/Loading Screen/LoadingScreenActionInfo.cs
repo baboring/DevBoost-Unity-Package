@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using DevBoost.ActionScript;
 
-namespace DevBoost
+namespace DevBoost.ActionScript
 {
 
-	[CreateAssetMenu(menuName = "ActionObject/LoadingScreenInfo")]
-	public class LoadingScreenInfo : ActionObject
+	[CreateAssetMenu(menuName = "ActionObject/LoadingScreenActionInfo")]
+	public class LoadingScreenActionInfo : ActionObject
 	{
 
 		[SerializeField]

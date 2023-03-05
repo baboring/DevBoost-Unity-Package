@@ -9,34 +9,72 @@ using UnityEngine;
 using System;
 
 
-namespace DevBoost.ActionScript {
+namespace DevBoost.ActionScript 
+{
 
-	public abstract class ActionTrigger : MonoBehaviour {
+	public class ActionTrigger : BaseActionTrigger
+	{
+
+		// condition
+		protected Predicate<Variable> match = null;
+
+		// Use this for initialization
+		public void Initialize()
+		{
+			if (null != actObj)
+				actObj.Initialize(this.gameObject);
+		}
+		public void Tick()
+		{
+			Debug.Assert(actObj != null);
+			Debug.Assert(match != null);
+			if (null == match || actObj == null)
+				return;
+			if (match(actObj.Value))
+			{
+				actObj.TriggerEvent();
+				InvokeAction();
+			}
+		}
+
+	}
+
+	/// <summary>
+	/// Base Tigger
+	/// </summary>
+	public abstract class BaseActionTrigger : MonoBehaviour
+	{
+		public string Name;
 
 		[SerializeField]
 		protected ActionObject actObj;
 
-		// condition
-		protected Predicate<Variable> match = null;
 		protected Action<ActionObject> action = null;
 
-		public string Name;
-		// Use this for initialization
-		public void Initialize() {
-			if(null != actObj)
-				actObj.Initialize(this.gameObject);
+		public void SetListener(Action<ActionObject> callback)
+		{
+			action = callback;
 		}
-		
-		// Update is called once per frame
-		public void Tick() {
-			if( null == match)
-				return;
-			if(match(actObj.Value))
-            {
-				actObj.TriggerEvent();
-				action?.Invoke(actObj);
-			}
+
+		public void AddListener(Action<ActionObject> callback)
+		{
+			action += callback;
+		}
+		public void RemoveListener(Action<ActionObject> callback)
+		{
+			action -= callback;
+		}
+
+		public void RemoveAllListener()
+		{
+			action = null;
+		}
+
+		protected void InvokeAction()
+		{
+			action?.Invoke(actObj);
 		}
 	}
+
 
 }
