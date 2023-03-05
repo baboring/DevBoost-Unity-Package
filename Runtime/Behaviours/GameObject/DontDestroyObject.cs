@@ -14,11 +14,15 @@ namespace DevBoost.ActionBehaviour {
 
     using NaughtyAttributes;
 
-	public class DontDestroyObject : ActionNode {
+	public class DontDestroyObject : ActionNodeVarTarget
+	{
+        protected override void OnReset()
+        {
+            base.OnReset();
 
-        [ReorderableList]
-		[SerializeField]
-		protected GameObject[] objects;
+			if (targetObject == null)
+				targetObject = this.gameObject;
+		}
 
         protected override ActionState OnUpdate() {
 
@@ -26,9 +30,9 @@ namespace DevBoost.ActionBehaviour {
 			ActionState result = base.OnUpdate();
 			if(result != ActionState.Success)
 				return result;
-			
-			for( int i=0;i < objects.Length; ++i )
-                DontDestroyOnLoad(objects[i]);
+
+			if (target != null)
+                DontDestroyOnLoad(target);
             
 			return ActionState.Success;
 		}
