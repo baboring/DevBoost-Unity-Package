@@ -1,6 +1,6 @@
 ﻿/* *************************************************
 *  Created:  2023-3-05 22:46:32
-*  File:     ActionUnityEvent.cs
+*  File:     UnityEventAction.cs
 *  Author:   Benjamin
 *  Purpose:  []
 ****************************************************/
@@ -10,7 +10,7 @@ using UnityEngine.Events;
 
 namespace DevBoost.ActionBehaviour {
 
-	public class ActionUnityEvent : ActionNode
+	public class UnityEventAction : ActionNode
 	{
 		[SerializeField]
 		protected UnityEvent events = new UnityEvent();
