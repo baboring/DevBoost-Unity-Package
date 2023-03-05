@@ -15,8 +15,7 @@ namespace DevBoost.Data
         // constructor
         public DataInvokeHandler(System.Action<T> callback = null, T initValue = default(T))
         {
-            if(null != callback)
-                m_NotifierValue += callback;
+            AddCallback(callback);
             m_data = initValue;
         }
 
@@ -70,13 +69,15 @@ namespace DevBoost.Data
         // Add Callback
         public void AddCallback(System.Action<T> callback)
         {
-            m_NotifierValue += callback;
+            if (callback != null)
+                m_NotifierValue += callback;
         }
 
         // Remove Callback
         public void RemoveCallback(System.Action<T> callback)
         {
-            m_NotifierValue -= callback;
+            if (callback != null)
+                m_NotifierValue -= callback;
         }
 
         // add callback

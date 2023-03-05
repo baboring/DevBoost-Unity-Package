@@ -14,9 +14,9 @@ namespace DevBoost.Data
             public DisposeCallback<T> Register<T>(System.Action<T> callback) where T : class
             {
                 if (syncData.ContainsKey(typeof(T)))
-                    syncData[typeof(T)].AddCallback((System.Action<object>)callback);
+                    syncData[typeof(T)].AddCallback(callback as System.Action<object>);
                 else
-                    syncData.Add(typeof(T), new DataInvokeHandler<object>((System.Action<object>)callback));
+                    syncData.Add(typeof(T), new DataInvokeHandler<object>(callback as System.Action<object>));
 
                 return new DisposeCallback<T>() { callback = callback };
             }
@@ -24,7 +24,7 @@ namespace DevBoost.Data
             public void Unregister<T>(System.Action<T> callback) where T : class
             {
                 if (syncData.ContainsKey(typeof(T)))
-                    syncData[typeof(T)].RemoveCallback((System.Action<object>)callback);
+                    syncData[typeof(T)].RemoveCallback(callback as System.Action<object>);
             }
             public void UpdateSyncData<T>(T msg)
             {
