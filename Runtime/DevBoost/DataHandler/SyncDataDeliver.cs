@@ -46,9 +46,9 @@ namespace DevBoost.Data
         }
 
         static private Facade facade = new Facade();
-        static public DisposeCallback<T> Receiver<T>(System.Action<T> callback) where T : class => facade.Register(callback);
-        static public void Remove<T>(System.Action<T> callback) where T : class => facade.Unregister(callback);
-        static public void Publish<T>(T obj) => facade.UpdateSyncData(obj);
+        static public DisposeCallback<T> Receiver<T>(System.Action<T> callback) where T : class => facade.Register<T>(callback);
+        static public void Remove<T>(System.Action<T> callback) where T : class => facade.Unregister<T>(callback);
+        static public void Publish<T>(T obj) => facade.UpdateSyncData<T>(obj);
 
     }
 
