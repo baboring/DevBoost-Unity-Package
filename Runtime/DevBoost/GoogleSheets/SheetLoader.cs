@@ -170,9 +170,15 @@ namespace DevBoost.DataTool
             }
 
             var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(contentType));
+            var oldList = (IList)listInfo.GetValue(container);
             foreach (var row in rows)
             {
-                var item = Activator.CreateInstance(contentType);
+                int idx = list.Count;
+                object item;
+                if (idx < oldList.Count)
+                    item = oldList[idx];
+                else
+                    item = Activator.CreateInstance(contentType);
 
                 for (int i = 0; i < headers.Count && i < row.Length; i++)
                     if (headersToFields.TryGetValue(headers[i], out var field))
