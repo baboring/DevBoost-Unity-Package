@@ -10,7 +10,7 @@ using System.Linq;
 namespace DevBoost.Data
 {
     // general value observer
-    public class DataTable
+    public class DataSheets
     {
         private Dictionary<Type, object> dataTable = new Dictionary<Type, object>();
 
@@ -21,7 +21,7 @@ namespace DevBoost.Data
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>
-        public void UpdateTable<T>(Dictionary<string, T> list)
+        public void UpdateSheet<T>(Dictionary<string, T> list)
         {
             UnityEngine.Debug.Assert(list != null, $"'{typeof(T)}' data sheet is null");
             if (list == null)
