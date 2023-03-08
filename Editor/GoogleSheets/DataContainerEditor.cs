@@ -62,10 +62,10 @@ namespace DevBoost.DataTool
 
             EditorGUILayout.BeginHorizontal();
 
-            if (GUILayout.Button("All"))
+            if (GUILayout.Button("Check All"))
                 SelectAll(true);
 
-            if (GUILayout.Button("None"))
+            if (GUILayout.Button("Uncheck All"))
                 SelectAll(false);
 
             if (GUILayout.Button("Import"))
