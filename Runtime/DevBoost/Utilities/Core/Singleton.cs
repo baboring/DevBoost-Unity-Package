@@ -179,3 +179,39 @@ namespace DevBoost.Utilities
     }
 
 }
+
+/// <summary>
+/// singleton scriptable object
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public class SingletonScriptableObject<T> : ScriptableObject where T : SingletonScriptableObject<T>
+{
+    private static T _instance;
+    public static T Instance
+    {
+        get 
+        {
+            if (_instance == null)
+            {
+                T[] assets = Resources.LoadAll<T>("");
+                if (assets == null || assets.Length < 1)
+                {
+                    throw new System.Exception("Cound not find any singleton scriptable object instance in the resources.");
+                }
+                else if (assets.Length > 1)
+                {
+                    UnityEngine.Debug.LogWarning("Multiple instances of the singleton scriptable object found in the reserouces.");
+                }
+                _instance = assets[0];
+                _instance.OnInstantiated();
+
+            }
+            return _instance;
+        }
+    }
+
+    public virtual void OnInstantiated()
+    {
+
+    }
+}

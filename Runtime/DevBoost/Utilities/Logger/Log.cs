@@ -1,4 +1,9 @@
-﻿#if (UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX) && FILE_LOG
+﻿/* *************************************************
+*  Created:  2012-2-25 14:51:00
+*  Author:   Benjamin
+*  Purpose:  []
+****************************************************/
+#if (UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX) && FILE_LOG
 #define SAVE_ENABLED
 #endif
 
