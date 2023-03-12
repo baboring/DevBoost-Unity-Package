@@ -13,7 +13,6 @@ namespace DevBoost.Data
     public class DataSheets
     {
         private Dictionary<Type, object> dataTable = new Dictionary<Type, object>();
-        private Dictionary<Type, object> dataList = new Dictionary<Type, object>();
 
         #region Util Functions
 
@@ -30,8 +29,6 @@ namespace DevBoost.Data
             if (!dataTable.ContainsKey(typeof(T)))
             {
                 dataTable.Add(typeof(T), dic);
-                // add list
-                dataList.Add(typeof(T), dic.Values.ToList());
                 return;
             }
 
@@ -44,22 +41,12 @@ namespace DevBoost.Data
                 else
                     table.Add(item.Key, item.Value);
             }
-            // list
-            dataList[typeof(T)] = dic.Values.ToList();
         }
 
         public Dictionary<string, T> GetTable<T>()
         {
             if (dataTable.ContainsKey(typeof(T)))
                 return dataTable[typeof(T)] as Dictionary<string, T>;
-            return null;
-        }
-
-
-        public List<T> GetList<T>()
-        {
-            if (dataList.ContainsKey(typeof(T)))
-                return dataList[typeof(T)] as List<T>;
             return null;
         }
 
