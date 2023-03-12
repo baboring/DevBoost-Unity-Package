@@ -13,6 +13,7 @@ namespace DevBoost.Data
     public class DataSheets
     {
         private Dictionary<Type, object> dataTable = new Dictionary<Type, object>();
+        private Dictionary<Type, object> dataList = new Dictionary<Type, object>();
 
         #region Util Functions
 
@@ -20,28 +21,31 @@ namespace DevBoost.Data
         /// Update data table with new data
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="list"></param>
-        public void UpdateSheet<T>(Dictionary<string, T> list)
+        /// <param name="dic"></param>
+        public void UpdateSheet<T>(Dictionary<string, T> dic)
         {
-            UnityEngine.Debug.Assert(list != null, $"'{typeof(T)}' data sheet is null");
-            if (list == null)
+            UnityEngine.Debug.Assert(dic != null, $"'{typeof(T)}' data sheet is null");
+            if (dic == null)
                 return;
             if (!dataTable.ContainsKey(typeof(T)))
             {
-                dataTable.Add(typeof(T), list);
+                dataTable.Add(typeof(T), dic);
+                // add list
+                dataList.Add(typeof(T), dic.Values.ToList());
                 return;
             }
 
             // update
             var table = dataTable[typeof(T)] as Dictionary<string, T>;
-            foreach (var item in list)
+            foreach (var item in dic)
             {
                 if (table.ContainsKey(item.Key))
                     table[item.Key] = item.Value;
                 else
                     table.Add(item.Key, item.Value);
             }
-
+            // list
+            dataList[typeof(T)] = dic.Values.ToList();
         }
 
         public Dictionary<string, T> GetTable<T>()
@@ -52,6 +56,12 @@ namespace DevBoost.Data
         }
 
 
+        public List<T> GetList<T>()
+        {
+            if (dataList.ContainsKey(typeof(T)))
+                return dataList[typeof(T)] as List<T>;
+            return null;
+        }
 
 
         /// <summary>

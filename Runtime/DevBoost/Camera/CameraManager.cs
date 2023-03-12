@@ -10,7 +10,6 @@ using NaughtyAttributes;
 namespace DevBoost
 {
     using DevBoost.Data;
-    using DevBoost.extension;
     using DevBoost.Utilities;
 
 #if UNITY_PIPELINE_URP

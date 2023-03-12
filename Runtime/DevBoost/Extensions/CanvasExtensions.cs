@@ -6,7 +6,7 @@
 
 using UnityEngine;
 
-namespace DevBoost.extension
+namespace DevBoost
 {
     /// <summary>
     /// Extention class for Canvas UI
