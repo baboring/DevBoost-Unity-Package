@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Collider2DOptimization{
+namespace DevBoost.Collider2D {
 	public static class ShapeOptimizationHelper{
 
 		// c# implementation of the Ramer-Douglas-Peucker-Algorithm by Craig Selbert slightly adapted for Unity Vector Types

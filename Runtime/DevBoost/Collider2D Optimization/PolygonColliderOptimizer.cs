@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Collider2DOptimization{
+namespace DevBoost.Collider2D {
 	/// <summary>
 	/// Polygon collider optimizer. Removes points from the collider polygon with 
 	/// the given reduction Tolerance

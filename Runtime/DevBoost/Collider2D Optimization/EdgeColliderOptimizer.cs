@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Collider2DOptimization{
+namespace DevBoost.Collider2D {
 	/// <summary>
 	/// Edge collider optimizer. Creates an edge collider by casting rays from the upper edge of the bounding box
 	/// into the edgeNormalOpposite direction (by default downwards). The resulting points are then reduced with 
