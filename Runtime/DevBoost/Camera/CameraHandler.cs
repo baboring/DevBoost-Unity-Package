@@ -16,10 +16,10 @@ namespace DevBoost
 
     public enum CameraType
     {
-        Default,
+        Independant,
+        Primary,
         Overlay,
         UICamera,
-        Independant,
         Tutorial,
     }
     /// <summary>
