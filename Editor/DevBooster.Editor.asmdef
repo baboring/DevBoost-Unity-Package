@@ -2,7 +2,7 @@
     "name": "NineD77.Editor",
     "rootNamespace": "",
     "references": [
-        "NineD77"
+        "GUID:01934e5bc4356014caa79132790ccd31"
     ],
     "includePlatforms": [
         "Editor"
