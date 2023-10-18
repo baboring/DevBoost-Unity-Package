@@ -19,6 +19,22 @@ namespace DevBoost.ActionBehaviour
 
     public sealed class StateMachineHandler : StateMachineBehaviour
     {
+        [SerializeField]
+        private bool triggerEnter;
+        [SerializeField]
+        private bool triggerUpdate;
+        [SerializeField]
+        private bool triggerExit;
+
+        public enum Trigger
+        {
+            Enter,
+            Exit,
+            Update
+        }
+
+
+
         public event Action<StateMachineInfo> OnEnterState = null;
         public event Action<StateMachineInfo> OnExitState = null;
         public event Action<StateMachineInfo> OnUpdateState = null;
@@ -26,8 +42,9 @@ namespace DevBoost.ActionBehaviour
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             // Using the shortNameHash to avoid dealing with layers. Can use nameHash instead.
-            if (OnEnterState != null)
-                OnEnterState.Invoke(new StateMachineInfo() {
+            if (OnEnterState != null && triggerEnter)
+                OnEnterState.Invoke(new StateMachineInfo() 
+                {
                     animator = animator,
                     stateInfo = stateInfo,
                     layer = layerIndex
@@ -36,8 +53,8 @@ namespace DevBoost.ActionBehaviour
 
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            if (OnExitState != null)
-                OnExitState.Invoke(new StateMachineInfo()
+            if (OnExitState != null && triggerExit)
+                OnExitState.Invoke(new StateMachineInfo() 
                 {
                     animator = animator,
                     stateInfo = stateInfo,
@@ -49,7 +66,7 @@ namespace DevBoost.ActionBehaviour
         public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             base.OnStateUpdate(animator, stateInfo, layerIndex);
-            if (OnUpdateState != null)
+            if (OnUpdateState != null && triggerUpdate)
                 OnUpdateState.Invoke(new StateMachineInfo()
                 {
                     animator = animator,
