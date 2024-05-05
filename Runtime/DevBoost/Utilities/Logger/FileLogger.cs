@@ -1,14 +1,12 @@
 ﻿/* ---------------------------------------------------------------------
  * Created on Wed Jan 24 2024 3:35:30 PM
  * Author : Benjamin Park
- * Copyright (c) 2021 PopReach
  * Description : Log handler
 --------------------------------------------------------------------- */
 using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 using System.IO;
 using System.Text;
