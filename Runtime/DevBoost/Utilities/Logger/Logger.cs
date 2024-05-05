@@ -5,7 +5,6 @@
 ****************************************************/
 
 using System;
-using System.Diagnostics;
 
 namespace DevBoost.Utilities {
 
@@ -27,7 +26,6 @@ namespace DevBoost.Utilities {
             logger = _logger;
         }
 
-        [Conditional("FILE_LOG")]
         public static void Trace(String format, params object[] args)
         {
             if (logger != null)

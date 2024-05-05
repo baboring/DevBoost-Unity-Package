@@ -7,9 +7,12 @@
 
 using UnityEngine;
 using UnityEditor;
-using System.IO;
 using System.Collections.Generic;
+
+#if JSON_UTILITY
+using System.IO;
 using Newtonsoft.Json;
+#endif
 
 namespace DevBoost
 {
@@ -30,6 +33,7 @@ namespace DevBoost
             gui.Clear();
 
         }
+#if JSON_UTILITY
 
         /// <summary>
         /// Writes the given object instance to a Json file.
@@ -79,8 +83,8 @@ namespace DevBoost
                     reader.Close();
             }
         }
+#endif
     }
-
 
     public class GUITextField : IGUI
     {

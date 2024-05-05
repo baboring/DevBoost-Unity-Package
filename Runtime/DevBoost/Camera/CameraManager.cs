@@ -153,7 +153,7 @@ namespace DevBoost
         {
             if (cam == null || m_lstCamera.Contains(cam))
                 return;
-            Debug.Log($"[TRACE] Camera Added: {cam.Type} | {cam.name}");
+            Logger.Trace($"[TRACE] Camera Added: {cam.Type} | {cam.name}");
 
             Debug.Assert(cam.Camera != null,"Camera is null : " + cam.name);
 #if UNITY_PIPELINE_URP
@@ -199,7 +199,7 @@ namespace DevBoost
             if (cam == null)
                 return;
 
-            Debug.Log($"[TRACE] Camera Removed :{cam.Type} | {cam.name}");
+            Logger.Trace($"[TRACE] Camera Removed :{cam.Type} | {cam.name}");
             m_lstCamera.Remove(cam);
 
 #if UNITY_PIPELINE_URP
@@ -207,7 +207,7 @@ namespace DevBoost
 
             if (baseCamera == null)
             {
-                Debug.Log("---- No Base Camera in the app for now -----------------------");
+                Logger.Trace("---- No Base Camera in the app for now -----------------------");
             }
             if (cam.Type == CameraType.Overlay || cam.Type == CameraType.Tutorial)
             {
