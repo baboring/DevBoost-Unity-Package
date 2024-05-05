@@ -45,7 +45,7 @@ namespace DevBoost.ActionBehaviour
         // Awake
         protected void Awake()
         {
-            DevBoost.Utilities.Log.Trace("Awake singleton AnctionNode : {0},{1}", typeof(T), m_SingletonType);
+            DevBoost.Utilities.Logger.Trace("Awake singleton AnctionNode : {0},{1}", typeof(T), m_SingletonType);
             if (null == Instance)
             {
                 Instance = this as T;
@@ -78,7 +78,7 @@ namespace DevBoost.ActionBehaviour
             if (Instance == null)
             {
                 Instance = this.GetComponent<T>();
-                DevBoost.Utilities.Log.Trace("[ Singleton - Instantiated ] {0}", typeof(T).ToString());
+                DevBoost.Utilities.Logger.Trace("[ Singleton - Instantiated ] {0}", typeof(T).ToString());
             }
 
             if (type == SingletonType.DontDestroyOnLoad)

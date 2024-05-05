@@ -82,7 +82,7 @@ namespace DevBoost.Utilities
         // Awake
         protected void Awake()
         {
-            Log.Trace(" [ Singleton ] Awake : {0},{1}", typeof(T), m_SingletonType);
+            Logger.Trace(" [ Singleton ] Awake : {0},{1}", typeof(T), m_SingletonType);
             if (null == Instance)
             {
                 Instance = this as T;
@@ -124,7 +124,7 @@ namespace DevBoost.Utilities
             if (Instance == null)
             {
                 Instance = Instantiate();
-                Log.Trace(" [ Singleton ] Instantiated :: " + typeof(T).ToString());
+                Logger.Trace(" [ Singleton ] Instantiated :: " + typeof(T).ToString());
             }
 
             if (type == SingletonType.DontDestroyOnLoad)
