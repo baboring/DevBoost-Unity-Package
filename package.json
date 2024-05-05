@@ -1,7 +1,7 @@
 {
   "name": "com.baboring.devbooster",
   "displayName": "DevBooster package",
-  "version": "0.9.11",
+  "version": "1.0.0",
   "description": "essential code package to buil up of the game project. required package: https://github.com/dbrizov/NaughtyAttributes.git#upm",
   "dependencies": {
     "com.dbrizov.naughtyattributes": "2.1.4"

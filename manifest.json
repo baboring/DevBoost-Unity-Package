@@ -3,7 +3,7 @@
   "displayName": "DevBooster package",
   "version": "1.1.0",
   "unity": "2020.3",
-  "author":"Ninedollars77"}  
+  "author":"Ninedollars77",  
   "description": "essential code package to buil up of the game project",
   "dependencies": {
     "com.dbrizov.naughtyattributes": "2.1.4"
