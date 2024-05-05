@@ -5,10 +5,11 @@
 *  Purpose:  []
 ****************************************************/
 
-using NaughtyAttributes;
 using System.Collections.Generic;
-using DevBoost.Extensions;
 using UnityEngine;
+using UnityEngine.Events;
+using DevBoost.Extensions;
+using NaughtyAttributes;
 
 namespace DevBoost.ActionBehaviour
 {       
@@ -29,21 +30,8 @@ namespace DevBoost.ActionBehaviour
         [SerializeField, ReorderableList]
         private AnimationEvent[] m_AnimationEvents = null;
 
-        /// <summary>
-        /// List of enter animation events registered
-        /// </summary>
-        [SerializeField, ReorderableList]
-        public AnimationEvent[] m_EnterAnimationEvents = null;
-
-        /// <summary>
-        /// List of exit animation events registered
-        /// </summary>
-        [SerializeField, ReorderableList]
-        public AnimationEvent[] m_ExitAnimationEvents = null;
-
         // used it for puase and result
         float? m_LastAniSpeed;
-
 
         /// <summary>
         /// Hash set of registered events
@@ -105,6 +93,8 @@ namespace DevBoost.ActionBehaviour
             // -----
             RegisterEvent(m_AnimationEvents);
         }
+
+
 
         private void RegisterEvent(AnimationEvent[] events)
         {
@@ -186,6 +176,17 @@ namespace DevBoost.ActionBehaviour
             if (null != m_Animator)
                 m_Animator.SetInteger(propertyName, value);
         }
+        
+        /// <summary>
+        /// Get the int value of a property
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public int GetInt(string propertyName)
+        {
+            Debug.Assert(null != m_Animator, "m_Animator is null");
+            return m_Animator.GetInteger(propertyName);
+        }
 
         /// <summary>
         /// Set float property in animator
@@ -229,11 +230,10 @@ namespace DevBoost.ActionBehaviour
         public virtual void RunAnimationEvent(string animationEventId)
         {
             // validate animation event
-            if(m_RegisteredEvents != null && m_RegisteredEvents.ContainsKey(animationEventId))
-            {
-                ExecuteEvent(m_RegisteredEvents[animationEventId]);
-            }
-
+            if (m_RegisteredEvents != null)
+                return;
+            if (m_RegisteredEvents.TryGetValue(animationEventId, out var aniEvent))
+                ExecuteEvent(aniEvent);
         }
 
         private void ExecuteEvent(AnimationEvent evt)
@@ -290,10 +290,8 @@ namespace DevBoost.ActionBehaviour
         public string animationEventId;
 
         [SerializeField]
-        private ActionNode m_AnimationEventNode = null;
+        public UnityEvent animationEvents = null;
 
-        // event node
-        public ActionNode ReceiveEventNode { get { return m_AnimationEventNode; } }
         private System.Action m_OnEvent = null;
 
         public int hash { get; set; }
@@ -328,10 +326,7 @@ namespace DevBoost.ActionBehaviour
             if (null != m_OnEvent)
                 m_OnEvent();
 
-            if (m_AnimationEventNode != null)
-            {
-                m_AnimationEventNode.ExecuteInvoke();
-            }
+            animationEvents?.Invoke();
             //else if(m_OnEvent == null)
             //{
             //    Debug.LogWarning("No Animation Event was provided for '" + animationEventId +"'");
