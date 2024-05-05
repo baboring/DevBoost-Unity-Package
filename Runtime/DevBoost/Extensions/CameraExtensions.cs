@@ -6,7 +6,7 @@
 
 using UnityEngine;
 
-namespace DevBoost
+namespace DevBoost.Extensions
 {
 
     public static class CameraExtensions

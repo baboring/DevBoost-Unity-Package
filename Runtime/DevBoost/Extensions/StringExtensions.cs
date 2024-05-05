@@ -10,7 +10,7 @@ using System.Globalization;
 using System.Linq;
 using UnityEngine;
 
-namespace DevBoost
+namespace DevBoost.Extensions
 {
 
     public static class StringExtensions

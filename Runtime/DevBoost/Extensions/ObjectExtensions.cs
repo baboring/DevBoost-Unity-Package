@@ -4,7 +4,7 @@
  * Description : Object extensions
 --------------------------------------------------------------------- */
 
-namespace DevBoost
+namespace DevBoost.Extensions
 {
 
     public static class ObjectExtensions
