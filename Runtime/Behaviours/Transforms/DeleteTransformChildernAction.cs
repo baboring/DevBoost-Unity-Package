@@ -5,6 +5,7 @@
 --------------------------------------------------------------------- */
 
 using UnityEngine;
+using DevBoost.Extensions;
 
 namespace DevBoost.ActionBehaviour
 {

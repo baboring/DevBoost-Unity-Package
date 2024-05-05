@@ -6,6 +6,7 @@
 using DevBoost.Effects;
 using NaughtyAttributes;
 using UnityEngine;
+using DevBoost.Extensions;
 
 namespace DevBoost.ActionBehaviour
 {

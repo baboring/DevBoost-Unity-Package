@@ -6,6 +6,7 @@
 *********************************************************************/
 using UnityEngine;
 using System.Diagnostics;
+using DevBoost.Extensions;
 
 namespace DevBoost.Utilities 
 {

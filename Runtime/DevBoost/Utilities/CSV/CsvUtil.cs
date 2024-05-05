@@ -9,6 +9,7 @@ using System;
 using System.Reflection;
 using System.ComponentModel;
 using System.Collections;
+using DevBoost.Extensions;
 
 namespace DevBoost.Utilities {
 

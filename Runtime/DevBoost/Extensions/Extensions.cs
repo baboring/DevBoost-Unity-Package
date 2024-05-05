@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,73 +9,17 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Globalization;
 
-namespace DevBoost
+namespace DevBoost.Extensions
 {
-    public static class ComponentExtention
-    {
-        public static ActionBehaviour.ActionNode AddToOnDestroy(this MonoBehaviour obj, System.Action callback)
-        {
-            var act = ActionBehaviour.ActionNode.AddTo<ActionBehaviour.ExecuteOnDestroy>(obj);
-            act.AddListener(callback);
-            return act;
-        }
 
-        public static ActionScript.MonoActionTrigger AddTo(this MonoBehaviour obj, System.Action callback, ActionBehaviour.StartOption startOption = ActionBehaviour.StartOption.Destroy)
-        {
-            var act = obj.GetOrAddComponent<ActionScript.MonoActionTrigger>();
-            act.startType = startOption;
-            act.AddListener((v)=>callback());
-            return act;
-        }
-
-    }
-
-    public static class GameObjectExtention
-    {
-        public static bool IsNull<T>(this T myObject, string message = "") where T : UnityEngine.Object
-        {
-            if (!myObject)
-            {
-                if (!string.IsNullOrEmpty(message))
-                    Debug.LogError("The object is null! " + message);
-                return true;
-            }
-
-            return false;
-        }
-
-        public static bool IsNull(this GameObject obj)
-        {
-            return ReferenceEquals(null, obj);
-        }
-
-
-        /// <summary>
-        /// Checks if a GameObject has been destroyed.
-        /// </summary>
-        /// <param name="gameObject">GameObject reference to check for destructedness</param>
-        /// <returns>If the game object has been marked as destroyed by UnityEngine</returns>
-        public static bool IsDestroyed(this GameObject gameObject)
-        {
-            // UnityEngine overloads the == opeator for the GameObject type
-            // and returns null when the object has been destroyed, but 
-            // actually the object is still there but has not been cleaned up yet
-            // if we test both we can determine if the object has been destroyed.
-            return gameObject == null && !ReferenceEquals(gameObject, null);
-        }
-
-        /// <summary>
-        /// Checks if a DontDestroyOnLoad is activated 
-        /// </summary>
-        /// <param name="gameObject">GameObject reference to check for destructedness</param>
-        public static bool IsDontDestroyOnLoad(this GameObject gameObject)
-        {
-            return gameObject != null && gameObject.scene.buildIndex == -1;
-        }
-    }
 
     public static class TransformExtention
     {
+        public static void DestroyChildren(this Transform target)
+        {
+            for (int i = target.childCount - 1; i >= 0; i--)
+                UnityEngine.Object.Destroy(target.GetChild(i).gameObject);
+        }
         public static Transform Clear(this Transform transform)
         {
             foreach (Transform child in transform)
@@ -134,6 +78,54 @@ namespace DevBoost
 
             return listFind;
         }
+
+        // transforms
+        static public void SetLocalPosX(this Transform t, float newX)
+        {
+            t.localPosition = new Vector3(newX, t.localPosition.y, t.localPosition.z);
+        }
+        static public void SetLocalPosY(this Transform t, float newY)
+        {
+            t.localPosition = new Vector3(t.localPosition.x, newY, t.localPosition.z);
+        }
+        static public void SetLocalPosZ(this Transform t, float newZ)
+        {
+            t.localPosition = new Vector3(t.localPosition.x, t.localPosition.y, newZ);
+        }
+        static public void SetLocalPosXY(this Transform t, float newX, float newY)
+        {
+            t.localPosition = new Vector3(newX, newY, t.localPosition.z);
+        }
+        static public void SetLocalPosYZ(this Transform t, float newY, float newZ)
+        {
+            t.localPosition = new Vector3(t.localPosition.x, newY, newZ);
+        }
+        static public void SetLocalPosXZ(this Transform t, float newX, float newZ)
+        {
+            t.localPosition = new Vector3(newX, t.localPosition.y, newZ);
+        }
+
+        // Get or Add component one time
+        static public T GetOrAddComponent<T>(this UnityEngine.Component child) where T : UnityEngine.Component
+        {
+            T result = child.GetComponent<T>();
+            if (result == null)
+            {
+                result = child.gameObject.AddComponent<T>();
+            }
+            return result;
+        }
+
+
+        static public void RecursivelyChangeLayer(this Transform trans, int layer)
+        {
+            for (int i = 0; i < trans.childCount; i++)
+            {
+                trans.GetChild(i).gameObject.layer = layer;
+                trans.GetChild(i).RecursivelyChangeLayer(layer);
+            }
+        }
+
     }
 
     public static class VectorExtention
@@ -168,57 +160,6 @@ namespace DevBoost
         #endregion
     }
 
-    public static class CameraExtensions
-    {
-        public static void LayerCullingShow(this Camera cam, int layerMask)
-        {
-            cam.cullingMask |= layerMask;
-        }
-        public static void LayerCullingShow(this Camera cam, string layer)
-        {
-            LayerCullingShow(cam, 1 << LayerMask.NameToLayer(layer));
-        }
-        public static void LayerCullingHide(this Camera cam, int layerMask)
-        {
-            cam.cullingMask &= ~layerMask;
-        }
-        public static void LayerCullingHide(this Camera cam, string layer)
-        {
-            LayerCullingHide(cam, 1 << LayerMask.NameToLayer(layer));
-        }
-        public static void LayerCullingToggle(this Camera cam, int layerMask)
-        {
-            cam.cullingMask ^= layerMask;
-        }
-        public static void LayerCullingToggle(this Camera cam, string layer)
-        {
-            LayerCullingToggle(cam, 1 << LayerMask.NameToLayer(layer));
-        }
-        public static bool LayerCullingIncludes(this Camera cam, int layerMask)
-        {
-            return (cam.cullingMask & layerMask) > 0;
-        }
-        public static bool LayerCullingIncludes(this Camera cam, string layer)
-        {
-            return LayerCullingIncludes(cam, 1 << LayerMask.NameToLayer(layer));
-        }
-        public static void LayerCullingToggle(this Camera cam, int layerMask, bool isOn)
-        {
-            bool included = LayerCullingIncludes(cam, layerMask);
-            if (isOn && !included)
-            {
-                LayerCullingShow(cam, layerMask);
-            }
-            else if (!isOn && included)
-            {
-                LayerCullingHide(cam, layerMask);
-            }
-        }
-        public static void LayerCullingToggle(this Camera cam, string layer, bool isOn)
-        {
-            LayerCullingToggle(cam, 1 << LayerMask.NameToLayer(layer), isOn);
-        }
-    }
 
     public static class ScrollRectExtensions
     {
@@ -383,99 +324,6 @@ namespace DevBoost
         }
     }
 
-    public static class StringExtensions
-    {
-        public static string Truncate(this string value, int maxLength)
-        {
-            if (value == null)
-                return null;
-
-            return value.Substring(0, Math.Min(value.Length, maxLength));
-        }
-        public static bool StartsWithAny(this string s, IEnumerable<string> items)
-        {
-            return items.Any(i => s.StartsWith(i));
-        }
-
-        public static object Parse(this string s, Type type)
-        {
-            return Parse(s, type, out var error);
-        }
-        public static object Parse(this string s, Type type, out bool error)
-        {
-            error = false;
-
-            if (type == typeof(string))
-                return s;
-
-            if (type == typeof(int))
-                return ParseInt(s, out error);
-
-            if (type == typeof(float))
-                return ParseFloat(s, out error);
-
-            if (type == typeof(bool))
-                return ParseBool(s, out error);
-
-            if (type.IsEnum)
-            {
-                object result;
-                try
-                {
-                    result = Enum.Parse(type, s, true);
-                }
-                catch (ArgumentException)
-                {
-                    result = default(object);
-                    error = false;
-                }
-                return result;
-            }
-
-            return default(object);
-        }
-
-        public static int ParseInt(this string s, out bool error)
-        {
-            error = !int.TryParse(s, out var result);
-
-            if (error)
-                Debug.LogWarning($"Error at parsing '{s}' to Integer");
-
-            return error
-                ? 0
-                : result;
-        }
-
-        public static readonly string[] TrueOptions = new string[] { "true", "yes" };
-        public static readonly string[] FalseOptions = new string[] { "false", "no" };
-        public static bool ParseBool(this string s, out bool error)
-        {
-            s = s.ToLower();
-            error = false;
-
-            for (int i = 0; i < TrueOptions.Length; i++)
-            {
-                if (s == TrueOptions[i])
-                    return true;
-                if (s == FalseOptions[i])
-                    return false;
-            }
-
-            error = true;
-            return false;
-        }
-
-        public static float ParseFloat(this string s, out bool error)
-        {
-            error = !float.TryParse(
-                s.Replace(',', '.'),
-                NumberStyles.Float,
-                CultureInfo.InvariantCulture,
-                out var result);
-            return result;
-        }
-    }
 
     public static class GuidExtensions
     {
@@ -677,142 +525,10 @@ namespace DevBoost
             return null;
         }
         
-        // Get or Add component one time
-		static public T GetOrAddComponent<T>(this UnityEngine.Component child) where T : UnityEngine.Component
-        {
-            T result = child.GetComponent<T>();
-            if (result == null) {
-                result = child.gameObject.AddComponent<T>();
-            }
-            return result;
-        }
 
-
-        static public void RecursivelyChangeLayer(this Transform trans, int layer)
-        {
-            for (int i = 0; i < trans.childCount; i++)
-            {
-                trans.GetChild(i).gameObject.layer = layer;
-                trans.GetChild(i).RecursivelyChangeLayer(layer);
-            }
-        }
-
-        // transforms
-        static public void SetLocalPosX(this Transform t, float newX)
-        {
-            t.localPosition = new Vector3(newX, t.localPosition.y, t.localPosition.z);
-        }
-        static public void SetLocalPosY(this Transform t, float newY)
-        {
-            t.localPosition = new Vector3(t.localPosition.x, newY, t.localPosition.z);
-        }
-        static public void SetLocalPosZ(this Transform t, float newZ)
-        {
-            t.localPosition = new Vector3(t.localPosition.x, t.localPosition.y, newZ);
-        }
-        static public void SetLocalPosXY(this Transform t, float newX, float newY)
-        {
-            t.localPosition = new Vector3(newX, newY, t.localPosition.z);
-        }
-        static public void SetLocalPosYZ(this Transform t, float newY, float newZ)
-        {
-            t.localPosition = new Vector3(t.localPosition.x, newY, newZ);
-        }
-        static public void SetLocalPosXZ(this Transform t, float newX, float newZ)
-        {
-            t.localPosition = new Vector3(newX, t.localPosition.y, newZ);
-        }
     }
 
 
-    public static class ReflectionExtensions
-    {
-        private static PropertyInfo GetPropertyInfo(Type type, string propertyName)
-        {
-            PropertyInfo propInfo = null;
-            do
-            {
-                propInfo = type.GetProperty(propertyName,
-                       BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                type = type.BaseType;
-            }
-            while (propInfo == null && type != null);
-            return propInfo;
-        }
-
-        public static object GetPropertyValue(this object obj, string propertyName)
-        {
-            if (obj == null)
-                throw new ArgumentNullException("obj");
-            Type objType = obj.GetType();
-            PropertyInfo propInfo = GetPropertyInfo(objType, propertyName);
-            if (propInfo == null)
-                throw new ArgumentOutOfRangeException("propertyName",
-                  string.Format("Couldn't find property {0} in type {1}", propertyName, objType.FullName));
-            return propInfo.GetValue(obj, null);
-        }
-
-        public static void SetPropertyValue(this object obj, string propertyName, object val)
-        {
-            if (obj == null)
-                throw new ArgumentNullException("obj");
-            Type objType = obj.GetType();
-            PropertyInfo propInfo = GetPropertyInfo(objType, propertyName);
-            if (propInfo == null)
-                throw new ArgumentOutOfRangeException("propertyName",
-                  string.Format("Couldn't find property {0} in type {1}", propertyName, objType.FullName));
-            propInfo.SetValue(obj, val, null);
-        }
-    }
-
-
-    public static class AnimatorExtensions
-    {
-        // Reset All Parameters (Clear all)
-        public static void ResetAllParameters(this Animator animator)
-        {
-            if (null == animator)
-                return;
-            // Reset All animator flag
-            AnimatorControllerParameter[] parameters = animator.parameters;
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                AnimatorControllerParameter parameter = parameters[i];
-                switch (parameter.type)
-                {
-                    case AnimatorControllerParameterType.Int:
-                        animator.SetInteger(parameter.name, parameter.defaultInt);
-                        break;
-                    case AnimatorControllerParameterType.Float:
-                        animator.SetFloat(parameter.name, parameter.defaultFloat);
-                        break;
-                    case AnimatorControllerParameterType.Bool:
-                        animator.SetBool(parameter.name, parameter.defaultBool);
-                        break;
-                    case AnimatorControllerParameterType.Trigger:
-                        animator.ResetTrigger(parameter.name);
-                        break;
-                }
-            }
-        }
-
-        public static bool IsContainParam(this Animator animator, string param)
-        {
-            Debug.Assert(animator != null, "animator is null");
-
-            if (animator == null || !animator.isActiveAndEnabled || animator.runtimeAnimatorController == null)
-                return false;
-
-            // Reset All animator flag
-            AnimatorControllerParameter[] parameters = animator.parameters;
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                if (parameters[i].name == param)
-                    return true;
-            }
-            return false;
-        }
-    }
 
     public static class TaskEx
     {
