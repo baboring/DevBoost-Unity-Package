@@ -78,7 +78,7 @@ namespace DevBoost.Utilities
             {
                 int size = webReqeust.downloadHandler.text?.Length ?? webReqeust.downloadHandler.text?.Length ?? 0;
 
-                Log.Trace($"[ Trace ] Time : {timeStamp.ElapsedMilliseconds} ms, size : {size}, URL : {webReqeust.url}");
+                Logger.Trace($"[ Trace ] Time : {timeStamp.ElapsedMilliseconds} ms, size : {size}, URL : {webReqeust.url}");
             }
             webReqeust = null;
             base.Dispose(disposing);
@@ -95,15 +95,15 @@ namespace DevBoost.Utilities
         public TracerTimeLog(string tag) : base()
         {
             tagString = tag;
-            Log.Trace($"[ Trace ] Time : #{tagString} >>>>>>> begin");
+            Logger.Trace($"[ Trace ] Time : #{tagString} >>>>>>> begin");
         }
         // Start is called before the first frame update
         protected override void Dispose(bool disposing)
         {
             if (isRealtime)
-                Log.Trace($"[ Trace ] Time : #{tagString} <<<<<<< Time : {Time.realtimeSinceStartup - timeSaved,0:F5} sec");
+                Logger.Trace($"[ Trace ] Time : #{tagString} <<<<<<< Time : {Time.realtimeSinceStartup - timeSaved,0:F5} sec");
             else
-                Log.Trace($"[ Trace ] Time : #{tagString} <<<<<<< Time : {timeStamp.ElapsedMilliseconds} ms");
+                Logger.Trace($"[ Trace ] Time : #{tagString} <<<<<<< Time : {timeStamp.ElapsedMilliseconds} ms");
 
             base.Dispose(disposing);
 

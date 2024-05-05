@@ -1,30 +1,50 @@
-/* *************************************************
-*  Created:  2023-2-23 14:51:00
+﻿/* *************************************************
+*  Created:  2012-2-25 14:51:00
 *  Author:   Benjamin
 *  Purpose:  []
 ****************************************************/
 
-using System.IO;
-using log4net;
-using log4net.Config;
+using System;
+using System.Diagnostics;
+
+namespace DevBoost.Utilities {
+
+    public interface ILogger<T>
+    {
+        public bool isEchoToConsole { get; }
+        public bool isCaptureLog { get; }
+        public void Write(string message, bool istimeStamp = true);
+    }
 
 
-namespace DevBoost.Utilities
-{
+
     public static class Logger
     {
-        static public ILog Dev { get; private set; }
+        static ILogger<FileLogger> logger;
 
-        static public bool Init(FileInfo fileInfo)
+        public static void Assign(ILogger<FileLogger> _logger)
         {
-            if ((fileInfo?.Length ?? -1) != -1)
-            {
-                XmlConfigurator.Configure(fileInfo);
-                Dev = log4net.LogManager.GetLogger("Dev");
-                return true;
-            }
+            logger = _logger;
+        }
 
-            return false;
+        [Conditional("FILE_LOG")]
+        public static void Trace(String format, params object[] args)
+        {
+            if (logger != null)
+            {
+                if (logger.isEchoToConsole)
+                {
+                    UnityEngine.Debug.Log(string.Format(format, args));
+                    if (logger.isCaptureLog)
+                        return;
+                }
+
+                logger.Write(string.Format(format, args));
+            }
+            //else
+            //    // Fallback if the debugging system hasn't been initialized yet.
+            //    UnityEngine.Debug.Log(Message);
         }
     }
+
 }

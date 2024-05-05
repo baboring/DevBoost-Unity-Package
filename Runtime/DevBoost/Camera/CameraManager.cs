@@ -77,7 +77,7 @@ namespace DevBoost
             {
                 UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, mode) =>
                 {
-                    Log.Trace($"[ CameraManager ] Loaded Scene : {scene.name}");
+                    Logger.Trace($"[ CameraManager ] Loaded Scene : {scene.name}");
                     SwitchUICamera(GameObject.FindObjectsOfType<CanvasHandler>());
                 };
             }
@@ -116,7 +116,7 @@ namespace DevBoost
             if (canvasList != null)
                 uiCanvasList.AddRange(canvasList);
 
-            Log.Trace("[ CameraManager ] SwitchUICamera - Current : {0}", Current.name);
+            Logger.Trace("[ CameraManager ] SwitchUICamera - Current : {0}", Current.name);
 
             // update canvas with UI Camera
             UpdateCanvasWithCamera(uiCanvasList, Current , updateMode);

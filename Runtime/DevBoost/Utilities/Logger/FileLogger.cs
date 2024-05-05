@@ -1,12 +1,9 @@
-﻿/* *************************************************
-*  Created:  2012-2-25 14:51:00
-*  Author:   Benjamin
-*  Purpose:  []
-****************************************************/
-#if (UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_STANDALONE_LINUX) && FILE_LOG
-#define SAVE_ENABLED
-#endif
-
+﻿/* ---------------------------------------------------------------------
+ * Created on Wed Jan 24 2024 3:35:30 PM
+ * Author : Benjamin Park
+ * Copyright (c) 2021 PopReach
+ * Description : Log handler
+--------------------------------------------------------------------- */
 using System;
 using UnityEngine;
 using System.Collections.Generic;
@@ -15,10 +12,12 @@ using System.Diagnostics;
 
 using System.IO;
 using System.Text;
+using static DevBoost.Utilities.Logger;
 
-namespace DevBoost.Utilities {
+namespace DevBoost.Utilities
+{
 
-    public class Log : SingletonMono<Log>
+    public class FileLogger : SingletonMono<FileLogger>, ILogger<FileLogger>
     {
         //-------------------------------------------------------------------------------------------------------------------------
         [SerializeField] private string logFile = "FileLog";
@@ -37,6 +36,9 @@ namespace DevBoost.Utilities {
         protected new void Awake()
         {
             base.Awake();
+
+            Logger.Assign(this);
+
             CreatelogFile();
 
             entries = new List<Entry>(maxEntries);
@@ -46,12 +48,11 @@ namespace DevBoost.Utilities {
                 SetVisible(true);
             }
 
-            if(isCaptureLog)
+            if (isCaptureLog)
                 Application.logMessageReceived += CaptureLog;
 
         }
 
-        [Conditional("SAVE_ENABLED")]
         void CreatelogFile()
         {
             int index = 0;
@@ -79,10 +80,9 @@ namespace DevBoost.Utilities {
                 File.Delete(filename);
             // Open the log file to append the new log to it.
             OutputStream = new StreamWriter(filename, true);
-            Log.Trace("<<< Logger Start >>>\n\n");
+            Trace("<<< Logger Start >>>\n\n");
         }
 
-        [Conditional("SAVE_ENABLED")]
         protected new void OnDestroy()
         {
             if (OutputStream != null)
@@ -90,11 +90,12 @@ namespace DevBoost.Utilities {
                 OutputStream.Close();
                 OutputStream = null;
             }
+            Logger.Assign(null);
+
             base.OnDestroy();
         }
 
-        [Conditional("SAVE_ENABLED")]
-        private void Write(string message, bool istimeStamp = true)
+        public void Write(string message, bool istimeStamp = true)
         {
 
             // window debug message
@@ -112,27 +113,6 @@ namespace DevBoost.Utilities {
                 OutputStream.Flush();
             }
         }
-
-
-        [Conditional("FILE_LOG")]
-        public static void Trace(String format, params object[] args)
-        {
-            if (Instance != null)
-            {
-                if (Instance.isEchoToConsole)
-                {
-                    UnityEngine.Debug.Log(string.Format(format, args));
-                    if (Instance.isCaptureLog)
-                        return;
-                }
-
-                Instance.Write(string.Format(format, args));
-            }
-            //else
-            //    // Fallback if the debugging system hasn't been initialized yet.
-            //    UnityEngine.Debug.Log(Message);
-        }
-
 
         [Serializable]
         public class LogMask
@@ -239,8 +219,12 @@ namespace DevBoost.Utilities {
             set { SetVisible(value); }
         }
 
+        bool ILogger<FileLogger>.isEchoToConsole => this.isEchoToConsole;
 
-#if DEBUG_CONFIG            
+        bool ILogger<FileLogger>.isCaptureLog => this.isCaptureLog;
+
+
+#if DEBUG_CONFIG
         void Update()
         {
             if (showByKey != KeyCode.None && Input.GetKeyDown(showByKey) && Input.GetKey(KeyCode.LeftControl))
@@ -428,7 +412,6 @@ namespace DevBoost.Utilities {
             SetVisible(false);
         }
 
-        [Conditional("SAVE_ENABLED")]
         public void Save()
         {
             int index = 0;
@@ -461,7 +444,7 @@ namespace DevBoost.Utilities {
             UnityEngine.Debug.Log("Saving console log to " + filename);
 
             File.WriteAllText(filename, sb.ToString());
-            //throw new NotSupportedException("Save is not supported on " + Application.platform);
+            throw new NotSupportedException("Save is not supported on " + Application.platform);
         }
 
         void CaptureLog(string log, string stacktrace, LogType type)
@@ -515,11 +498,11 @@ namespace DevBoost.Utilities {
                 case LogType.Error: errorCount++; break;
             }
 
-            if (Log.Instance != null)
+            if (FileLogger.Instance != null)
             {
-                Log.Instance.Write(log);
+                FileLogger.Instance.Write(log);
                 if (type != LogType.Log && type != LogType.Warning)
-                    Log.Instance.Write(stacktrace, false);
+                    FileLogger.Instance.Write(stacktrace, false);
             }
 
 
