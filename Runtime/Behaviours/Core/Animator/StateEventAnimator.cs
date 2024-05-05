@@ -38,11 +38,18 @@ namespace DevBoost.ActionBehaviour
         [SerializeField, ReorderableList]
         public List<AnimationEvent> ExitAnimationEvents = null;
 
+        /// <summary>
+        /// List of enter animation events registered
+        /// </summary>
+        [SerializeField, ReorderableList]
+        public List<AnimationEvent> UpdateAnimationEvents = null;
+
         private sealed class StateCallbacks
         {
             public int hash;
             public Action callbackEnter = null;
             public Action callbackExit = null;
+            public Action callbackUpdate = null;
         }
 
         private StateCallbacks currentState = null;
@@ -66,6 +73,7 @@ namespace DevBoost.ActionBehaviour
                 {
                     stateBehaviour.OnEnterState += OnEnterState;
                     stateBehaviour.OnExitState += OnExitState;
+                    stateBehaviour.OnUpdateState += OnUpdateState;
                 }
             }
 
@@ -74,9 +82,11 @@ namespace DevBoost.ActionBehaviour
                 aniEvent.hash = Animator.StringToHash(aniEvent.animationEventId);
             foreach (var aniEvent in ExitAnimationEvents)
                 aniEvent.hash = Animator.StringToHash(aniEvent.animationEventId);
+            foreach (var aniEvent in UpdateAnimationEvents)
+                aniEvent.hash = Animator.StringToHash(aniEvent.animationEventId);
         }
 
-        public void RegisterStateCallback(string eventName, Action onEnter, Action onExit = null)
+        public void RegisterStateCallback(string eventName, Action onEnter, Action onExit = null, Action onUpdate = null)
         {
             // Using the state names to register, but using the hash internally
             int shortNameHash = Animator.StringToHash(eventName);
@@ -86,7 +96,8 @@ namespace DevBoost.ActionBehaviour
                 {
                     hash = shortNameHash,
                     callbackEnter = onEnter,
-                    callbackExit = onExit
+                    callbackExit = onExit,
+                    callbackUpdate = onUpdate,
                 });
             }
         }
@@ -114,6 +125,21 @@ namespace DevBoost.ActionBehaviour
                         info.RunEvent();
             }
         }
+
+        private void OnUpdateState(StateMachineInfo stateInfo)
+        {
+            int hash = hashType == HashType.State ? stateInfo.stateInfo.shortNameHash : stateInfo.stateInfo.tagHash;
+            if (registeredStates.TryGetValue(hash, out StateCallbacks state))
+                state?.callbackUpdate?.Invoke();
+
+            if (UpdateAnimationEvents.Count > 0)
+            {
+                foreach (var info in UpdateAnimationEvents)
+                    if (info.hash == hash)
+                        info.RunEvent();
+            }
+        }
+
 
         private void OnExitState(StateMachineInfo stateInfo)
         {
